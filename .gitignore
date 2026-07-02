@@ -36,3 +36,4 @@ salt
 .omo/
 .codegraph/
 .opencode/
+dist/
