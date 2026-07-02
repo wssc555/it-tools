@@ -33,76 +33,67 @@ const toolDescription = computed<string>(() => t(`tools.${i18nKey.value}.descrip
 <template>
   <BaseLayout>
     <div class="tool-layout">
+      <!-- Tool Header -->
       <div class="tool-header">
-        <div flex flex-nowrap items-center justify-between>
-          <n-h1>
+        <div class="tool-header-top">
+          <n-h1 class="tool-title">
             {{ toolTitle }}
           </n-h1>
-
-          <div>
-            <FavoriteButton :tool="{ name: route.meta.name, path: route.path } as Tool" />
-          </div>
+          <FavoriteButton :tool="{ name: route.meta.name, path: route.path } as Tool" />
         </div>
-
-        <div class="separator" />
-
-        <div class="description">
+        <div class="tool-description">
           {{ toolDescription }}
         </div>
       </div>
-    </div>
 
-    <div class="tool-content">
-      <slot />
+      <!-- Tool Content (workbench area) -->
+      <div class="tool-content">
+        <slot />
+      </div>
     </div>
   </BaseLayout>
 </template>
 
 <style lang="less" scoped>
-.tool-content {
-  display: flex;
-  flex-direction: row;
-  justify-content: center;
-  align-items: flex-start;
-  flex-wrap: wrap;
-  gap: 16px;
+.tool-layout {
+  max-width: 1400px;
+  margin: 0 auto;
+  width: 100%;
+}
 
-  ::v-deep(& > *) {
-    flex: 0 1 600px;
+.tool-header {
+  padding: 8px 0 24px;
+
+  .tool-header-top {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+  }
+
+  .tool-title {
+    font-family: var(--font-heading);
+    font-size: 28px;
+    font-weight: 600;
+    margin: 0;
+    line-height: 1.2;
+    color: var(--text-primary);
+    opacity: 0.95;
+    letter-spacing: -0.02em;
+  }
+
+  .tool-description {
+    margin-top: 6px;
+    font-size: 15px;
+    line-height: 1.55;
+    color: var(--text-secondary);
   }
 }
 
-.tool-layout {
-  max-width: 600px;
-  margin: 0 auto;
-  box-sizing: border-box;
-
-  .tool-header {
-    padding: 40px 0;
-    width: 100%;
-
-    .n-h1 {
-      opacity: 0.9;
-      font-size: 40px;
-      font-weight: 400;
-      margin: 0;
-      line-height: 1;
-    }
-
-    .separator {
-      width: 200px;
-      height: 2px;
-      background: rgb(161, 161, 161);
-      opacity: 0.2;
-
-      margin: 10px 0;
-    }
-
-    .description {
-      margin: 0;
-
-      opacity: 0.7;
-    }
-  }
+.tool-content {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  width: 100%;
 }
 </style>

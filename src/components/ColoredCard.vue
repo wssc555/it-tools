@@ -6,50 +6,60 @@ const { icon, title } = toRefs(props);
 </script>
 
 <template>
-  <c-card class="colored-card">
-    <n-icon class="icon" size="40" :component="icon" />
-    <n-h3 class="title">
+  <div class="bento-card">
+    <n-icon class="bento-icon" size="36" :component="icon" />
+    <div class="bento-title">
       <n-ellipsis>{{ title }}</n-ellipsis>
-    </n-h3>
-
-    <div class="description">
+    </div>
+    <div class="bento-desc">
       <n-ellipsis :line-clamp="2" :tooltip="false">
         <slot />
       </n-ellipsis>
     </div>
-  </c-card>
+  </div>
 </template>
 
 <style lang="less" scoped>
-.colored-card {
-  background: rgb(37, 99, 108);
-  background: linear-gradient(48deg, rgba(37, 99, 108, 1) 0%, rgba(59, 149, 111, 1) 60%, rgba(20, 160, 88, 1) 100%);
-  color: #fff;
-  border: none;
+.bento-card {
+  background: linear-gradient(135deg, rgba(34, 211, 238, 0.08) 0%, rgba(163, 230, 53, 0.05) 100%);
+  border: 1px solid rgba(34, 211, 238, 0.12);
+  border-radius: var(--radius-lg, 24px);
+  padding: 24px;
+  color: var(--text-primary);
+  transition: border-color var(--transition-base);
 
-  .icon {
-    opacity: 0.7;
+  &:hover {
+    border-color: rgba(34, 211, 238, 0.25);
   }
 
-  .title {
-    color: #fff;
-
-    margin: 5px 0;
-  }
-
-  .description {
+  .bento-icon {
+    color: var(--accent-cyan);
     opacity: 0.8;
+    margin-bottom: 12px;
+  }
 
-    margin: 5px 0;
+  .bento-title {
+    font-family: var(--font-heading);
+    font-size: 16px;
+    font-weight: 600;
+    color: var(--text-primary);
+    margin-bottom: 8px;
+  }
+
+  .bento-desc {
+    font-size: 14px;
+    line-height: 1.55;
+    color: var(--text-secondary);
+    opacity: 0.9;
 
     ::v-deep(a) {
-      color: inherit;
+      color: var(--accent-cyan);
       text-decoration: underline;
-      font-weight: bold;
-      transition: color ease 0.2s;
+      font-weight: 500;
+      transition: color var(--transition-fast);
 
       &:hover {
-        color: rgb(20, 20, 20);
+        color: var(--accent-cyan-hover);
       }
     }
   }

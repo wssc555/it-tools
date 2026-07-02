@@ -80,7 +80,7 @@ const tools = computed<ToolCategory[]>(() => [
             </template>
           </div>
           <div>
-            © {{ new Date().getFullYear() }}
+            &copy; {{ new Date().getFullYear() }}
             <c-link target="_blank" rel="noopener" href="https://corentin.tech?utm_source=it-tools&utm_medium=footer">
               Corentin Thomasset
             </c-link>
@@ -90,7 +90,7 @@ const tools = computed<ToolCategory[]>(() => [
     </template>
 
     <template #content>
-      <div flex items-center justify-center gap-2>
+      <div class="navbar glass-elevated">
         <c-button
           circle
           variant="text"
@@ -135,45 +135,40 @@ const tools = computed<ToolCategory[]>(() => [
           </c-button>
         </c-tooltip>
       </div>
-      <slot />
+      <div class="content-area">
+        <slot />
+      </div>
     </template>
   </MenuLayout>
 </template>
 
 <style lang="less" scoped>
-// ::v-deep(.n-layout-scroll-container) {
-//     @percent: 4%;
-//     @position: 25px;
-//     @size: 50px;
-//     @color: #eeeeee25;
-//     background-image: radial-gradient(@color @percent, transparent @percent),
-//         radial-gradient(@color @percent, transparent @percent);
-//     background-position: 0 0, @position @position;
-//     background-size: @size @size;
-// }
-
 .support-button {
-  background: rgb(37, 99, 108);
-  background: linear-gradient(48deg, rgba(37, 99, 108, 1) 0%, rgba(59, 149, 111, 1) 60%, rgba(20, 160, 88, 1) 100%);
-  color: #fff !important;
-  transition: padding ease 0.2s !important;
+  background: rgba(34, 211, 238, 0.1);
+  border: 1px solid rgba(34, 211, 238, 0.2) !important;
+  color: var(--accent-cyan) !important;
+  font-family: var(--font-body);
+  font-size: 13px;
+  font-weight: 500;
+  transition: all var(--transition-base) !important;
 
   &:hover {
-    color: #fff;
-    padding-left: 30px;
-    padding-right: 30px;
+    background: rgba(34, 211, 238, 0.18);
+    border-color: rgba(34, 211, 238, 0.35) !important;
+    color: var(--accent-cyan-hover) !important;
   }
 }
 
 .footer {
   text-align: center;
-  color: #838587;
+  color: var(--text-muted);
+  opacity: 0.6;
   margin-top: 20px;
   padding: 20px 0;
 }
 
 .sider-content {
-  padding-top: 160px;
+  padding-top: 180px;
   padding-bottom: 200px;
 }
 
@@ -214,5 +209,25 @@ const tools = computed<ToolCategory[]>(() => [
       font-size: 16px;
     }
   }
+}
+
+.navbar {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 16px;
+  border-radius: var(--radius-md, 16px);
+  margin-bottom: var(--space-md, 16px);
+
+  &.glass-elevated {
+    background: var(--bg-elevated);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+  }
+}
+
+.content-area {
+  padding: 0 var(--space-sm, 8px);
 }
 </style>

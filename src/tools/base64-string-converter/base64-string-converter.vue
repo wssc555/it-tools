@@ -1,20 +1,22 @@
 <script setup lang="ts">
+import { Copy } from '@vicons/tabler';
 import { useCopy } from '@/composable/copy';
 import { base64ToText, isValidBase64, textToBase64 } from '@/utils/base64';
 import { withDefaultOnError } from '@/utils/defaults';
+import WorkbenchPanel from '@/components/workbench/WorkbenchPanel.vue';
 
 const encodeUrlSafe = useStorage('base64-string-converter--encode-url-safe', false);
 const decodeUrlSafe = useStorage('base64-string-converter--decode-url-safe', false);
 
 const textInput = ref('');
 const base64Output = computed(() => textToBase64(textInput.value, { makeUrlSafe: encodeUrlSafe.value }));
-const { copy: copyTextBase64 } = useCopy({ source: base64Output, text: 'Base64 string copied to the clipboard' });
+const { copy: copyTextBase64, isJustCopied: isBase64Copied } = useCopy({ source: base64Output, text: 'Base64 string copied to the clipboard' });
 
 const base64Input = ref('');
 const textOutput = computed(() =>
   withDefaultOnError(() => base64ToText(base64Input.value.trim(), { makeUrlSafe: decodeUrlSafe.value }), ''),
 );
-const { copy: copyText } = useCopy({ source: textOutput, text: 'String copied to the clipboard' });
+const { copy: copyText, isJustCopied: isTextCopied } = useCopy({ source: textOutput, text: 'String copied to the clipboard' });
 const b64ValidationRules = [
   {
     message: 'Invalid base64 string',
@@ -25,66 +27,187 @@ const b64ValidationWatch = [decodeUrlSafe];
 </script>
 
 <template>
-  <c-card title="String to base64">
-    <n-form-item label="Encode URL safe" label-placement="left">
-      <n-switch v-model:value="encodeUrlSafe" />
-    </n-form-item>
-    <c-input-text
-      v-model:value="textInput"
-      multiline
-      placeholder="Put your string here..."
-      rows="5"
-      label="String to encode"
-      raw-text
-      mb-5
-    />
+  <div class="base64-workbench">
+    <!-- Encode Section -->
+    <WorkbenchPanel label="String to Base64" class="encode-section">
+      <div class="section-controls">
+        <n-switch v-model:value="encodeUrlSafe">
+          <template #checked>URL Safe</template>
+          <template #unchecked>Standard</template>
+        </n-switch>
+      </div>
 
-    <c-input-text
-      label="Base64 of string"
-      :value="base64Output"
-      multiline
-      readonly
-      placeholder="The base64 encoding of your string will be here"
-      rows="5"
-      mb-5
-    />
+      <div class="workbench-split">
+        <div class="input-col">
+          <label class="field-label">Input string</label>
+          <c-input-text
+            v-model:value="textInput"
+            multiline
+            placeholder="Put your string here..."
+            rows="4"
+            raw-text
+            class="field-input"
+          />
+        </div>
+        <div class="output-col">
+          <div class="field-label-row">
+            <label class="field-label">Base64 output</label>
+            <c-tooltip :tooltip="isBase64Copied ? 'Copied!' : 'Copy base64'" position="left">
+              <c-button
+                circle
+                variant="text"
+                class="copy-btn"
+                :class="{ copied: isBase64Copied }"
+                @click="copyTextBase64()"
+              >
+                <n-icon size="18" :component="Copy" />
+              </c-button>
+            </c-tooltip>
+          </div>
+          <div class="output-display">
+            <code>{{ base64Output || 'Base64 encoding will appear here' }}</code>
+          </div>
+        </div>
+      </div>
+    </WorkbenchPanel>
 
-    <div flex justify-center>
-      <c-button @click="copyTextBase64()">
-        Copy base64
-      </c-button>
-    </div>
-  </c-card>
+    <!-- Decode Section -->
+    <WorkbenchPanel label="Base64 to String" type="output" class="decode-section">
+      <div class="section-controls">
+        <n-switch v-model:value="decodeUrlSafe">
+          <template #checked>URL Safe</template>
+          <template #unchecked>Standard</template>
+        </n-switch>
+      </div>
 
-  <c-card title="Base64 to string">
-    <n-form-item label="Decode URL safe" label-placement="left">
-      <n-switch v-model:value="decodeUrlSafe" />
-    </n-form-item>
-    <c-input-text
-      v-model:value="base64Input"
-      multiline
-      placeholder="Your base64 string..."
-      rows="5"
-      :validation-rules="b64ValidationRules"
-      :validation-watch="b64ValidationWatch"
-      label="Base64 string to decode"
-      mb-5
-    />
-
-    <c-input-text
-      v-model:value="textOutput"
-      label="Decoded string"
-      placeholder="The decoded string will be here"
-      multiline
-      rows="5"
-      readonly
-      mb-5
-    />
-
-    <div flex justify-center>
-      <c-button @click="copyText()">
-        Copy decoded string
-      </c-button>
-    </div>
-  </c-card>
+      <div class="workbench-split">
+        <div class="input-col">
+          <label class="field-label">Base64 string</label>
+          <c-input-text
+            v-model:value="base64Input"
+            multiline
+            placeholder="Your base64 string..."
+            rows="4"
+            :validation-rules="b64ValidationRules"
+            :validation-watch="b64ValidationWatch"
+            raw-text
+            class="field-input"
+          />
+        </div>
+        <div class="output-col">
+          <div class="field-label-row">
+            <label class="field-label">Decoded string</label>
+            <c-tooltip :tooltip="isTextCopied ? 'Copied!' : 'Copy decoded string'" position="left">
+              <c-button
+                circle
+                variant="text"
+                class="copy-btn"
+                :class="{ copied: isTextCopied }"
+                @click="copyText()"
+              >
+                <n-icon size="18" :component="Copy" />
+              </c-button>
+            </c-tooltip>
+          </div>
+          <div class="output-display">
+            <code>{{ textOutput || 'Decoded string will appear here' }}</code>
+          </div>
+        </div>
+      </div>
+    </WorkbenchPanel>
+  </div>
 </template>
+
+<style lang="less" scoped>
+.base64-workbench {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  width: 100%;
+}
+
+.section-controls {
+  margin-bottom: 12px;
+}
+
+.workbench-split {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+
+  @media (max-width: 1024px) {
+    grid-template-columns: 1fr;
+  }
+}
+
+.field-label {
+  display: block;
+  font-family: var(--font-heading);
+  font-size: 11px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--text-secondary);
+  margin-bottom: 6px;
+}
+
+.field-label-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 6px;
+}
+
+.field-input {
+  ::v-deep(textarea) {
+    font-family: var(--font-mono);
+    font-size: 13px;
+    line-height: 1.5;
+    min-height: 80px;
+    background: transparent;
+    border: none;
+    color: var(--text-primary);
+    resize: vertical;
+    padding: 0;
+    width: 100%;
+
+    &:focus {
+      outline: none;
+    }
+
+    &::placeholder {
+      color: var(--text-muted);
+    }
+  }
+}
+
+.output-display {
+  background: var(--surface-output, var(--bg-app));
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-sm, 8px);
+  padding: 12px;
+  min-height: 80px;
+
+  code {
+    font-family: var(--font-mono);
+    font-size: 13px;
+    line-height: 1.5;
+    color: var(--text-primary);
+    white-space: pre-wrap;
+    word-break: break-all;
+    display: block;
+  }
+}
+
+.copy-btn {
+  transition: all var(--transition-fast);
+
+  &.copied {
+    color: var(--accent-lime) !important;
+  }
+
+  &:hover {
+    background: rgba(34, 211, 238, 0.1) !important;
+  }
+}
+</style>

@@ -22,64 +22,68 @@ function onUpdateFavoriteTools() {
 </script>
 
 <template>
-  <div class="pt-50px">
-    <div class="grid-wrapper">
-      <div class="grid grid-cols-1 gap-12px lg:grid-cols-3 md:grid-cols-3 sm:grid-cols-2 xl:grid-cols-4">
-        <ColoredCard v-if="config.showBanner" :title="$t('home.follow.title')" :icon="IconHeart">
-          {{ $t('home.follow.p1') }}
-          <a
-            href="https://github.com/CorentinTh/it-tools"
-            rel="noopener"
-            target="_blank"
-            :aria-label="$t('home.follow.githubRepository')"
-          >GitHub</a>
-          {{ $t('home.follow.p2') }}
-          <a
-            href="https://x.com/ittoolsdottech"
-            rel="noopener"
-            target="_blank"
-            :aria-label="$t('home.follow.twitterXAccount')"
-          >X</a>.
-          {{ $t('home.follow.thankYou') }}
-          <n-icon :component="IconHeart" />
-        </ColoredCard>
-      </div>
+  <div class="home-page">
+    <!-- Hero Bento Row -->
+    <div v-if="config.showBanner" class="bento-hero-row">
+      <ColoredCard :title="$t('home.follow.title')" :icon="IconHeart">
+        {{ $t('home.follow.p1') }}
+        <a
+          href="https://github.com/CorentinTh/it-tools"
+          rel="noopener"
+          target="_blank"
+          :aria-label="$t('home.follow.githubRepository')"
+        >GitHub</a>
+        {{ $t('home.follow.p2') }}
+        <a
+          href="https://x.com/ittoolsdottech"
+          rel="noopener"
+          target="_blank"
+          :aria-label="$t('home.follow.twitterXAccount')"
+        >X</a>.
+        {{ $t('home.follow.thankYou') }}
+        <n-icon :component="IconHeart" />
+      </ColoredCard>
+    </div>
 
-      <transition name="height">
-        <div v-if="toolStore.favoriteTools.length > 0">
-          <h3 class="mb-5px mt-25px text-neutral-400 font-500">
-            {{ $t('home.categories.favoriteTools') }}
-            <c-tooltip :tooltip="$t('home.categories.favoritesDndToolTip')">
-              <n-icon :component="IconDragDrop" size="18" />
-            </c-tooltip>
-          </h3>
-          <Draggable
-            :list="favoriteTools"
-            class="grid grid-cols-1 gap-12px lg:grid-cols-3 md:grid-cols-3 sm:grid-cols-2 xl:grid-cols-4"
-            ghost-class="ghost-favorites-draggable"
-            item-key="name"
-            @end="onUpdateFavoriteTools"
-          >
-            <template #item="{ element: tool }">
-              <ToolCard :tool="tool" />
-            </template>
-          </Draggable>
-        </div>
-      </transition>
-
-      <div v-if="toolStore.newTools.length > 0">
-        <h3 class="mb-5px mt-25px text-neutral-400 font-500">
-          {{ t('home.categories.newestTools') }}
+    <!-- Favorites -->
+    <transition name="height">
+      <div v-if="toolStore.favoriteTools.length > 0" class="section-block">
+        <h3 class="section-title">
+          <span class="section-title-text">{{ $t('home.categories.favoriteTools') }}</span>
+          <c-tooltip :tooltip="$t('home.categories.favoritesDndToolTip')">
+            <n-icon :component="IconDragDrop" size="16" class="drag-icon" />
+          </c-tooltip>
         </h3>
-        <div class="grid grid-cols-1 gap-12px lg:grid-cols-3 md:grid-cols-3 sm:grid-cols-2 xl:grid-cols-4">
-          <ToolCard v-for="tool in toolStore.newTools" :key="tool.name" :tool="tool" />
-        </div>
+        <Draggable
+          :list="favoriteTools"
+          class="bento-grid"
+          ghost-class="ghost-favorites-draggable"
+          item-key="name"
+          @end="onUpdateFavoriteTools"
+        >
+          <template #item="{ element: tool }">
+            <ToolCard :tool="tool" />
+          </template>
+        </Draggable>
       </div>
+    </transition>
 
-      <h3 class="mb-5px mt-25px text-neutral-400 font-500">
-        {{ $t('home.categories.allTools') }}
+    <!-- New Tools -->
+    <div v-if="toolStore.newTools.length > 0" class="section-block">
+      <h3 class="section-title">
+        <span class="section-title-text">{{ t('home.categories.newestTools') }}</span>
       </h3>
-      <div class="grid grid-cols-1 gap-12px lg:grid-cols-3 md:grid-cols-3 sm:grid-cols-2 xl:grid-cols-4">
+      <div class="bento-grid">
+        <ToolCard v-for="tool in toolStore.newTools" :key="tool.name" :tool="tool" />
+      </div>
+    </div>
+
+    <!-- All Tools -->
+    <div class="section-block">
+      <h3 class="section-title">
+        <span class="section-title-text">{{ $t('home.categories.allTools') }}</span>
+      </h3>
+      <div class="bento-grid">
         <ToolCard v-for="tool in toolStore.tools" :key="tool.name" :tool="tool" />
       </div>
     </div>
@@ -87,6 +91,50 @@ function onUpdateFavoriteTools() {
 </template>
 
 <style scoped lang="less">
+.home-page {
+  padding: 0;
+}
+
+/* ─── Bento Hero ─── */
+.bento-hero-row {
+  margin-bottom: 28px;
+}
+
+/* ─── Section ─── */
+.section-block {
+  margin-bottom: 28px;
+}
+
+.section-title {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin: 0 0 12px;
+  font-size: 14px;
+  font-weight: 600;
+  font-family: var(--font-heading);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--text-secondary);
+}
+
+.drag-icon {
+  color: var(--text-muted);
+  cursor: help;
+}
+
+/* ─── Bento Grid ─── */
+.bento-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+  gap: 12px;
+
+  @media (max-width: 640px) {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* ─── Favorites drag transition ─── */
 .height-enter-active,
 .height-leave-active {
   transition: all 0.5s ease-in-out;
@@ -104,10 +152,11 @@ function onUpdateFavoriteTools() {
 
 .ghost-favorites-draggable {
   opacity: 0.4;
-  background-color: #ccc;
-  border: 2px dashed #666;
+  background-color: var(--bg-surface-2);
+  border: 2px dashed var(--accent-cyan);
+  border-radius: var(--radius-md, 16px);
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
-  transform: scale(1.1);
+  transform: scale(1.05);
   animation: ghost-favorites-draggable-animation 0.2s ease-out;
 }
 

@@ -7,12 +7,12 @@ const siderPosition = computed(() => (isSmallScreen.value ? 'absolute' : 'static
 </script>
 
 <template>
-  <n-layout has-sider>
+  <n-layout has-sider :sider-border-color="'transparent'">
     <n-layout-sider
-      bordered
+      class="glass-sider"
       collapse-mode="width"
       :collapsed-width="0"
-      :width="240"
+      :width="260"
       :collapsed="isMenuCollapsed"
       :show-trigger="false"
       :native-scrollbar="false"
@@ -28,21 +28,48 @@ const siderPosition = computed(() => (isSmallScreen.value ? 'absolute' : 'static
 </template>
 
 <style lang="less" scoped>
+.glass-sider {
+  background: var(--bg-glass);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+
+  ::v-deep(.n-layout-sider-scroll-container) {
+    &::-webkit-scrollbar {
+      width: 6px;
+    }
+
+    &::-webkit-scrollbar-track {
+      background: transparent;
+    }
+
+    &::-webkit-scrollbar-thumb {
+      background: var(--border-subtle);
+      border-radius: 3px;
+    }
+  }
+}
+
+.content {
+  background: var(--bg-app);
+
+  ::v-deep(.n-layout-scroll-container) {
+    padding: 24px 32px;
+
+    @media (max-width: 700px) {
+      padding: 16px;
+    }
+  }
+}
+
 .overlay {
-  position: absolute;
+  position: fixed;
   top: 0;
   left: 0;
   width: 100%;
   height: 100%;
-  background-color: #00000080;
+  background-color: rgba(0, 0, 0, 0.5);
   cursor: pointer;
-}
-
-.content {
-  // background-color: #f1f5f9;
-  ::v-deep(.n-layout-scroll-container) {
-    padding: 26px;
-  }
+  z-index: 10;
 }
 
 .n-layout {
