@@ -37,3 +37,4 @@ salt
 .codegraph/
 .opencode/
 dist/
+docs/

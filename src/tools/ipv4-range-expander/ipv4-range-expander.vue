@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { Exchange } from '@vicons/tabler';
+import { IconArrowsExchange } from '@tabler/icons-vue';
 import { isValidIpv4 } from '../ipv4-address-converter/ipv4-address-converter.service';
 import type { Ipv4RangeExpanderResult } from './ipv4-range-expander.types';
 import { calculateCidr } from './ipv4-range-expander.service';
@@ -16,26 +16,10 @@ const calculatedValues: {
   getOldValue: (result: Ipv4RangeExpanderResult | undefined) => string | undefined
   getNewValue: (result: Ipv4RangeExpanderResult | undefined) => string | undefined
 }[] = [
-  {
-    label: 'Start address',
-    getOldValue: () => rawStartAddress.value,
-    getNewValue: result => result?.newStart,
-  },
-  {
-    label: 'End address',
-    getOldValue: () => rawEndAddress.value,
-    getNewValue: result => result?.newEnd,
-  },
-  {
-    label: 'Addresses in range',
-    getOldValue: result => result?.oldSize?.toLocaleString(),
-    getNewValue: result => result?.newSize?.toLocaleString(),
-  },
-  {
-    label: 'CIDR',
-    getOldValue: () => '',
-    getNewValue: result => result?.newCidr,
-  },
+  { label: 'Start address', getOldValue: () => rawStartAddress.value, getNewValue: result => result?.newStart },
+  { label: 'End address', getOldValue: () => rawEndAddress.value, getNewValue: result => result?.newEnd },
+  { label: 'Addresses in range', getOldValue: result => result?.oldSize?.toLocaleString(), getNewValue: result => result?.newSize?.toLocaleString() },
+  { label: 'CIDR', getOldValue: () => '', getNewValue: result => result?.newCidr },
 ];
 
 const startIpValidation = useValidation({
@@ -58,62 +42,35 @@ function onSwitchStartEndClicked() {
 
 <template>
   <div>
-    <div mb-4 flex gap-4>
-      <c-input-text
-        v-model:value="rawStartAddress"
-        label="Start address"
-        placeholder="Start IPv4 address..."
-        :validation="startIpValidation"
-        clearable
-      />
-
-      <c-input-text
-        v-model:value="rawEndAddress"
-        label="End address"
-        placeholder="End IPv4 address..."
-        :validation="endIpValidation"
-        clearable
-      />
+    <div class="mb-4 flex gap-4">
+      <c-input-text v-model:value="rawStartAddress" label="Start address" placeholder="Start IPv4 address..." :validation="startIpValidation" clearable />
+      <c-input-text v-model:value="rawEndAddress" label="End address" placeholder="End IPv4 address..." :validation="endIpValidation" clearable />
     </div>
 
-    <n-table v-if="showResult" data-test-id="result">
-      <thead>
-        <tr>
-          <th scope="col">
-&nbsp;
-          </th>
-          <th scope="col">
-            old value
-          </th>
-          <th scope="col">
-            new value
-          </th>
-        </tr>
-      </thead>
-      <tbody>
-        <ResultRow
-          v-for="{ label, getOldValue, getNewValue } in calculatedValues"
-          :key="label"
-          :label="label"
-          :old-value="getOldValue(result)"
-          :new-value="getNewValue(result)"
-        />
-      </tbody>
-    </n-table>
-    <n-alert
-      v-else-if="startIpValidation.isValid && endIpValidation.isValid"
-      title="Invalid combination of start and end IPv4 address"
-      type="error"
-    >
-      <div my-3 op-70>
+    <div v-if="showResult" data-test-id="result" class="overflow-x-auto rounded-[var(--radius-sm)] border border-[var(--border-subtle)]">
+      <table class="w-full border-collapse text-left text-sm">
+        <thead>
+          <tr class="border-b border-[var(--border-subtle)] bg-[var(--bg-surface-2)]">
+            <th scope="col" class="px-4 py-3 text-xs font-semibold uppercase tracking-wider text-[var(--text-secondary)]">&nbsp;</th>
+            <th scope="col" class="px-4 py-3 text-xs font-semibold uppercase tracking-wider text-[var(--text-secondary)]">old value</th>
+            <th scope="col" class="px-4 py-3 text-xs font-semibold uppercase tracking-wider text-[var(--text-secondary)]">new value</th>
+          </tr>
+        </thead>
+        <tbody>
+          <ResultRow v-for="{ label, getOldValue, getNewValue } in calculatedValues" :key="label" :label="label" :old-value="getOldValue(result)" :new-value="getNewValue(result)" />
+        </tbody>
+      </table>
+    </div>
+    <c-alert v-else-if="startIpValidation.isValid && endIpValidation.isValid" title="Invalid combination of start and end IPv4 address" type="error">
+      <div class="my-3 opacity-70 text-[var(--text-muted)]">
         The end IPv4 address is lower than the start IPv4 address. This is not valid and no result could be calculated.
         In the most cases the solution to solve this problem is to change start and end address.
       </div>
 
       <c-button @click="onSwitchStartEndClicked">
-        <n-icon mr-2 :component="Exchange" depth="3" size="22" />
+        <IconArrowsExchange size="22" class="mr-2 opacity-30" />
         Switch start and end IPv4 address
       </c-button>
-    </n-alert>
+    </c-alert>
   </div>
 </template>

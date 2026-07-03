@@ -42,23 +42,30 @@ const { copy: copyArabic } = useCopy({ source: () => String(outputNumeral), text
 <template>
   <div>
     <c-card title="Arabic to roman">
-      <div flex items-center justify-between>
-        <n-form-item v-bind="validationNumeral as any">
-          <n-input-number v-model:value="inputNumeral" :min="1" style="width: 200px" :show-button="false" />
-        </n-form-item>
-        <div class="result">
+      <div class="flex items-center justify-between gap-4">
+        <div class="flex items-center gap-2">
+          <label class="text-sm text-[var(--text-secondary)]">Number:</label>
+          <input
+            v-model.number="inputNumeral"
+            type="number"
+            :min="1"
+            class="h-10 w-[200px] rounded-[var(--radius-sm)] border border-[var(--border-subtle)] bg-[var(--surface-input)] px-3 text-[var(--text-primary)] outline-none transition-colors focus:border-[var(--accent-primary)] focus:shadow-[0_0_0_2px_var(--accent-primary-glow)]"
+          />
+          <span v-if="validationNumeral.validationStatus === 'error'" class="text-xs text-[var(--state-danger)]">{{ validationNumeral.validationErrorMessage }}</span>
+        </div>
+        <div class="text-[22px] font-mono text-[var(--text-primary)]">
           {{ outputRoman }}
         </div>
-        <c-button autofocus :disabled="validationNumeral.validationStatus === 'error'" @click="copyRoman()">
+        <c-button :disabled="validationNumeral.validationStatus === 'error'" @click="copyRoman()">
           Copy
         </c-button>
       </div>
     </c-card>
-    <c-card title="Roman to arabic" mt-5>
-      <div flex items-center justify-between>
+    <c-card title="Roman to arabic" class="mt-5">
+      <div class="flex items-center justify-between gap-4">
         <c-input-text v-model:value="inputRoman" style="width: 200px" :validation="validationRoman" />
 
-        <div class="result">
+        <div class="text-[22px] font-mono text-[var(--text-primary)]">
           {{ outputNumeral }}
         </div>
         <c-button :disabled="!validationRoman.isValid" @click="copyArabic()">
@@ -68,9 +75,3 @@ const { copy: copyArabic } = useCopy({ source: () => String(outputNumeral), text
     </c-card>
   </div>
 </template>
-
-<style lang="less" scoped>
-.result {
-  font-size: 22px;
-}
-</style>

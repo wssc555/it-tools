@@ -1,6 +1,4 @@
 <script lang="ts" setup>
-import { useAppTheme } from '../theme/themes';
-import { useTheme } from './c-input-text.theme';
 import { generateRandomId } from '@/utils/random';
 import { type UseValidationRule, useValidation } from '@/composable/validation';
 
@@ -74,9 +72,6 @@ const validation
     watch: props.validationWatch,
   });
 
-const theme = useTheme();
-const appTheme = useAppTheme();
-
 const textareaRef = ref<HTMLTextAreaElement>();
 const inputRef = ref<HTMLInputElement>();
 const inputWrapperRef = ref<HTMLElement>();
@@ -144,13 +139,24 @@ defineExpose({
 
 <template>
   <div
-    class="c-input-text"
-    :class="{ disabled, 'error': !validation.isValid, 'label-left': labelPosition === 'left', multiline }"
+    class="c-input-text flex w-full flex-col"
+    :class="{
+      'flex-row items-baseline': labelPosition === 'left',
+      'c-input-text--error': !validation.isValid,
+      'c-input-text--disabled': disabled,
+      'c-input-text--multiline': multiline,
+    }"
   >
-    <label v-if="label" :for="id" class="label"> {{ label }} </label>
+    <label v-if="label" :for="id" class="c-input-text__label mb-1 shrink-0 pe-3" :style="{ flexBasis: labelWidth, textAlign: labelAlign }">
+      {{ label }}
+    </label>
 
-    <div class="feedback-wrapper">
-      <div ref="inputWrapperRef" class="input-wrapper">
+    <div class="c-input-text__feedback-wrapper min-w-0 flex-1">
+      <div ref="inputWrapperRef" class="c-input-text__wrapper flex flex-row items-center overflow-hidden rounded-[var(--radius-sm)] border px-3 transition-[border-color] duration-200"
+        :class="{
+          'resize-y': multiline,
+        }"
+      >
         <slot name="prefix" />
 
         <textarea
@@ -158,10 +164,8 @@ defineExpose({
           :id="id"
           ref="textareaRef"
           v-model="value"
-          class="input"
-          :class="{
-            'leading-5 !font-mono': monospace,
-          }"
+          class="c-input-text__input h-full w-full resize-none border-none bg-transparent py-2 outline-none [word-break:break-word] [white-space:pre-wrap] [overflow-wrap:break-word]"
+          :class="{ 'font-mono !important': monospace }"
           :placeholder="placeholder"
           :readonly="readonly"
           :disabled="disabled"
@@ -179,10 +183,8 @@ defineExpose({
           ref="inputRef"
           v-model="value"
           :type="htmlInputType"
-          class="input"
-          :class="{
-            'leading-5 !font-mono': monospace,
-          }"
+          class="c-input-text__input min-w-0 flex-1 border-none bg-transparent py-2 outline-none"
+          :class="{ 'font-mono !important': monospace }"
           size="1"
           :placeholder="placeholder"
           :readonly="readonly"
@@ -204,137 +206,76 @@ defineExpose({
         </c-button>
         <slot name="suffix" />
       </div>
-      <span v-if="!validation.isValid" class="feedback"> {{ validation.message }} </span>
+      <span v-if="!validation.isValid" class="c-input-text__feedback mt-1 block text-sm">
+        {{ validation.message }}
+      </span>
     </div>
   </div>
 </template>
 
 <style lang="less" scoped>
 .c-input-text {
-  display: inline-flex;
-  flex-direction: column;
-  width: 100%;
-
-  &.label-left {
-    flex-direction: row;
-    align-items: baseline;
+  &__label {
+    color: var(--text-primary);
+    font-size: 14px;
+    line-height: 1.5;
   }
 
-  &.error {
-    & > .input {
-      border-color: v-bind('appTheme.error.color');
-      &:hover,
-      &:focus {
-        border-color: v-bind('appTheme.error.color');
-      }
-
-      &:focus {
-        background-color: v-bind('appTheme.error.color + 22');
-      }
-    }
-
-    & .feedback {
-      color: v-bind('appTheme.error.color');
-    }
-  }
-
-  & > .label {
-    margin-bottom: 5px;
-    flex: 0 0 v-bind('labelWidth');
-    text-align: v-bind('labelAlign');
-    padding-right: 12px;
-  }
-
-  .feedback-wrapper {
-    flex: 1 1 0;
-    min-width: 0;
-  }
-  .input-wrapper {
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    background-color: v-bind('theme.backgroundColor');
-    color: transparent;
-    border: 1px solid v-bind('theme.borderColor');
-    border-radius: 4px;
-    padding: 0 4px 0 12px;
-    transition: border-color 0.2s ease-in-out;
-
-    .multiline& {
-      resize: vertical;
-      overflow: hidden;
-
-      & > textarea {
-        height: 100%;
-        resize: none;
-        word-break: break-word;
-        white-space: pre-wrap;
-        overflow-wrap: break-word;
-        border: none;
-        outline: none;
-        font-family: inherit;
-        font-size: inherit;
-        color: v-bind('appTheme.text.baseColor');
-
-        &::placeholder {
-          color: v-bind('appTheme.text.mutedColor');
-        }
-      }
-    }
-
-    & > .input {
-      flex: 1 1 0;
-      min-width: 0;
-
-      padding: 8px 0;
-      outline: none;
-      background-color: transparent;
-      background-image: none;
-      -webkit-box-shadow: none;
-      -moz-box-shadow: none;
-      box-shadow: none;
-      border: none;
-      color: v-bind('appTheme.text.baseColor');
-
-      &::placeholder {
-        color: v-bind('appTheme.text.mutedColor');
-      }
-    }
+  &__wrapper {
+    background: var(--surface-input);
+    border-color: var(--border-subtle);
+    color: var(--text-primary);
+    min-height: 40px;
 
     &:hover {
-      border-color: v-bind('appTheme.primary.color');
+      border-color: var(--accent-primary);
     }
 
     &:focus-within {
-      border-color: v-bind('appTheme.primary.color');
-
-      background-color: v-bind('theme.focus.backgroundColor');
+      border-color: var(--accent-primary);
+      box-shadow: 0 0 0 2px var(--accent-primary-glow);
     }
   }
 
-  &.error .input-wrapper {
-    border-color: v-bind('appTheme.error.color');
+  &__input {
+    color: var(--text-primary);
+    font-family: var(--font-body);
+    font-size: 15px;
+    line-height: 1.5;
 
-    &:hover,
-    &:focus-within {
-      border-color: v-bind('appTheme.error.color');
+    &::placeholder {
+      color: var(--text-muted);
     }
 
-    &:focus-within {
-      background-color: v-bind('appTheme.error.color + 22');
-    }
-  }
-
-  &.disabled .input-wrapper {
-    opacity: 0.5;
-
-    &:hover,
-    &:focus-within {
-      border-color: v-bind('theme.borderColor');
-    }
-
-    & > .input {
+    &:disabled {
       cursor: not-allowed;
+    }
+  }
+
+  &__feedback {
+    color: var(--state-danger);
+  }
+
+  /* ─── Error state ─── */
+  &--error &__wrapper {
+    border-color: var(--state-danger);
+    &:hover, &:focus-within {
+      border-color: var(--state-danger);
+    }
+    &:focus-within {
+      box-shadow: 0 0 0 2px color-mix(in srgb, var(--state-danger), transparent 80%);
+    }
+  }
+
+  /* ─── Disabled state ─── */
+  &--disabled {
+    opacity: 0.5;
+    pointer-events: none;
+
+    .c-input-text__wrapper {
+      &:hover, &:focus-within {
+        border-color: var(--border-subtle);
+      }
     }
   }
 }

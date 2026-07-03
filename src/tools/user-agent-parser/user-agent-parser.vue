@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { UAParser } from 'ua-parser-js';
-import { Adjustments, Browser, Cpu, Devices, Engine } from '@vicons/tabler';
+import { IconAdjustments, IconBrowser, IconCpu, IconDevices, IconEngine } from '@tabler/icons-vue';
 import UserAgentResultCards from './user-agent-result-cards.vue';
 import type { UserAgentResultSection } from './user-agent-parser.types';
 import { withDefaultOnError } from '@/utils/defaults';
@@ -8,7 +8,7 @@ import { withDefaultOnError } from '@/utils/defaults';
 const ua = ref(navigator.userAgent as string);
 
 // If not input in the ua field is present return an empty object of type UAParser.IResult because otherwise
-// UAParser returns the values for the current Browser. This is confusing because results are shown for an empty
+// UAParser returns the values for the current IconBrowser. This is confusing because results are shown for an empty
 // UA field value.
 function getUserAgentInfo(userAgent: string) {
   return userAgent.trim().length > 0
@@ -19,8 +19,8 @@ const userAgentInfo = computed(() => withDefaultOnError(() => getUserAgentInfo(u
 
 const sections: UserAgentResultSection[] = [
   {
-    heading: 'Browser',
-    icon: Browser,
+    heading: 'IconBrowser',
+    icon: IconBrowser,
     content: [
       {
         label: 'Name',
@@ -35,8 +35,8 @@ const sections: UserAgentResultSection[] = [
     ],
   },
   {
-    heading: 'Engine',
-    icon: Engine,
+    heading: 'IconEngine',
+    icon: IconEngine,
     content: [
       {
         label: 'Name',
@@ -52,7 +52,7 @@ const sections: UserAgentResultSection[] = [
   },
   {
     heading: 'OS',
-    icon: Adjustments,
+    icon: IconAdjustments,
     content: [
       {
         label: 'Name',
@@ -68,7 +68,7 @@ const sections: UserAgentResultSection[] = [
   },
   {
     heading: 'Device',
-    icon: Devices,
+    icon: IconDevices,
     content: [
       {
         label: 'Model',
@@ -89,7 +89,7 @@ const sections: UserAgentResultSection[] = [
   },
   {
     heading: 'CPU',
-    icon: Cpu,
+    icon: IconCpu,
     content: [
       {
         label: 'Architecture',

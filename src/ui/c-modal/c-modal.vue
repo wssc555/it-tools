@@ -1,6 +1,4 @@
 <script setup lang="ts">
-import { useTheme } from './c-modal.theme';
-
 defineOptions({
   inheritAttrs: false,
 });
@@ -16,61 +14,46 @@ const isOpen = useVModel(props, 'open', emit, { passive: true });
 
 const { centered } = toRefs(props);
 
-function close() {
-  isOpen.value = false;
-}
+function close() { isOpen.value = false; }
+function open() { isOpen.value = true; }
+function toggle() { isOpen.value = !isOpen.value; }
 
-function open() {
-  isOpen.value = true;
-}
+defineExpose({ close, open, toggle, isOpen });
 
-function toggle() {
-  isOpen.value = !isOpen.value;
-}
-
-defineExpose({
-  close,
-  open,
-  toggle,
-  isOpen,
-});
-
-const theme = useTheme();
 const modal = ref();
 
 onClickOutside(modal, () => {
-  if (isOpen.value) {
-    close();
-  }
+  if (isOpen.value) close();
 });
 </script>
 
 <template>
-  <transition>
-    <div v-if="isOpen" class="c-modal--overlay" fixed left-0 top-0 z-10 h-full w-full flex justify-center px-2 :class="{ 'items-center': centered }">
-      <div ref="modal" class="c-modal--container" v-bind="$attrs" max-w-xl w-full flex-grow rounded-md pa-24px>
+  <transition name="modal">
+    <div
+      v-if="isOpen"
+      class="fixed inset-0 z-50 flex justify-center px-2"
+      :class="{ 'items-center': centered }"
+      style="background-color: rgba(0, 0, 0, 0.5);"
+    >
+      <div
+        ref="modal"
+        v-bind="$attrs"
+        class="w-full max-w-xl rounded-[var(--radius-md)] bg-[var(--bg-surface-1)] p-6 shadow-[var(--shadow-lg)]"
+      >
         <slot />
       </div>
     </div>
   </transition>
 </template>
 
-<style scoped lang="less">
-.c-modal--overlay {
-  background-color: rgba(0, 0, 0, 0.5);
-}
-
-.c-modal--container {
-  background-color: v-bind('theme.background');
-}
-
-.v-enter-active,
-.v-leave-active {
+<style lang="less" scoped>
+.modal-enter-active,
+.modal-leave-active {
   transition: opacity 0.3s ease-in-out;
 }
 
-.v-enter-from,
-.v-leave-to {
+.modal-enter-from,
+.modal-leave-to {
   opacity: 0;
 }
 </style>

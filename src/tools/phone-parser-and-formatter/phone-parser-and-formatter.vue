@@ -34,46 +34,16 @@ const parsedDetails = computed(() => {
   }
 
   return [
-    {
-      label: 'Country',
-      value: parsed.country,
-    },
-    {
-      label: 'Country',
-      value: getFullCountryName(parsed.country),
-    },
-    {
-      label: 'Country calling code',
-      value: parsed.countryCallingCode,
-    },
-    {
-      label: 'Is valid?',
-      value: booleanToHumanReadable(parsed.isValid()),
-    },
-    {
-      label: 'Is possible?',
-      value: booleanToHumanReadable(parsed.isPossible()),
-    },
-    {
-      label: 'Type',
-      value: formatTypeToHumanReadable(parsed.getType()),
-    },
-    {
-      label: 'International format',
-      value: parsed.formatInternational(),
-    },
-    {
-      label: 'National format',
-      value: parsed.formatNational(),
-    },
-    {
-      label: 'E.164 format',
-      value: parsed.format('E.164'),
-    },
-    {
-      label: 'RFC3966 format',
-      value: parsed.format('RFC3966'),
-    },
+    { label: 'Country', value: parsed.country },
+    { label: 'Country', value: getFullCountryName(parsed.country) },
+    { label: 'Country calling code', value: parsed.countryCallingCode },
+    { label: 'Is valid?', value: booleanToHumanReadable(parsed.isValid()) },
+    { label: 'Is possible?', value: booleanToHumanReadable(parsed.isPossible()) },
+    { label: 'Type', value: formatTypeToHumanReadable(parsed.getType()) },
+    { label: 'International format', value: parsed.formatInternational() },
+    { label: 'National format', value: parsed.formatNational() },
+    { label: 'E.164 format', value: parsed.format('E.164') },
+    { label: 'RFC3966 format', value: parsed.format('RFC3966') },
   ];
 });
 
@@ -85,30 +55,28 @@ const countriesOptions = getCountries().map(code => ({
 
 <template>
   <div>
-    <c-select v-model:value="defaultCountryCode" label="Default country code:" :options="countriesOptions" searchable mb-5 />
+    <c-select v-model:value="defaultCountryCode" label="Default country code:" :options="countriesOptions" searchable class="mb-5" />
 
     <c-input-text
       v-model:value="rawPhone"
       placeholder="Enter a phone number"
       label="Phone number:"
       :validation="validation"
-      mb-5
+      class="mb-5"
     />
 
-    <n-table v-if="parsedDetails">
-      <tbody>
-        <tr v-for="{ label, value } in parsedDetails" :key="label">
-          <td font-bold>
-            {{ label }}
-          </td>
-          <td>
-            <span-copyable v-if="value" :value="value" />
-            <span v-else op-70>
-              Unknown
-            </span>
-          </td>
-        </tr>
-      </tbody>
-    </n-table>
+    <div v-if="parsedDetails" class="overflow-x-auto rounded-[var(--radius-sm)] border border-[var(--border-subtle)]">
+      <table class="w-full border-collapse text-sm">
+        <tbody>
+          <tr v-for="{ label, value } in parsedDetails" :key="label" class="border-b border-[var(--border-subtle)] last:border-b-0">
+            <td class="px-4 py-2 font-semibold text-[var(--text-primary)]" style="white-space: nowrap;">{{ label }}</td>
+            <td class="px-4 py-2 text-[var(--text-secondary)]">
+              <span-copyable v-if="value" :value="value" />
+              <span v-else class="opacity-70 text-[var(--text-muted)]">Unknown</span>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
   </div>
 </template>

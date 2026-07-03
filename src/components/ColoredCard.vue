@@ -7,14 +7,14 @@ const { icon, title } = toRefs(props);
 
 <template>
   <div class="bento-card">
-    <n-icon class="bento-icon" size="36" :component="icon" />
+    <component :is="icon" :size="36" class="bento-icon" />
     <div class="bento-title">
-      <n-ellipsis>{{ title }}</n-ellipsis>
+      <span class="line-clamp-1">{{ title }}</span>
     </div>
     <div class="bento-desc">
-      <n-ellipsis :line-clamp="2" :tooltip="false">
+      <span class="line-clamp-2">
         <slot />
-      </n-ellipsis>
+      </span>
     </div>
   </div>
 </template>

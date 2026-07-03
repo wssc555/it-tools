@@ -20,9 +20,9 @@ const mimeTypeFound = computed(() => (selectedExtension.value ? extensionToMimeT
 
 <template>
   <c-card>
-    <n-h2 style="margin-bottom: 0">
+    <h2 class="text-lg font-semibold mb-0" style="margin-bottom: 0">
       Mime type to extension
-    </n-h2>
+    </h2>
     <div style="opacity: 0.8">
       Know which file extensions are associated to a mime-type
     </div>
@@ -35,28 +35,23 @@ const mimeTypeFound = computed(() => (selectedExtension.value ? extensionToMimeT
     />
 
     <div v-if="extensionsFound.length > 0">
-      Extensions of files with the <n-tag round :bordered="false">
-        {{ selectedMimeType }}
-      </n-tag> mime-type:
+      Extensions of files with the <span class="inline-flex items-center rounded-full border border-[var(--border-subtle)] bg-[var(--bg-surface)] px-2.5 py-0.5 text-sm font-medium">{{ selectedMimeType }}</span> mime-type:
       <div style="margin-top: 10px">
-        <n-tag
+        <span
           v-for="extension of extensionsFound"
           :key="extension"
-          round
-          :bordered="false"
-          type="primary"
-          style="margin-right: 10px"
+          class="inline-flex items-center rounded-full bg-[var(--accent-cyan)]/15 text-[var(--accent-cyan)] px-2.5 py-0.5 text-sm font-medium mr-2"
         >
           .{{ extension }}
-        </n-tag>
+        </span>
       </div>
     </div>
   </c-card>
 
   <c-card>
-    <n-h2 style="margin-bottom: 0">
+    <h2 class="text-lg font-semibold mb-0" style="margin-bottom: 0">
       File extension to mime type
-    </n-h2>
+    </h2>
     <div style="opacity: 0.8">
       Know which mime type is associated to a file extension
     </div>
@@ -69,36 +64,32 @@ const mimeTypeFound = computed(() => (selectedExtension.value ? extensionToMimeT
     />
 
     <div v-if="selectedExtension">
-      Mime type associated to the extension <n-tag round :bordered="false">
-        {{ selectedExtension }}
-      </n-tag> file
+      Mime type associated to the extension <span class="inline-flex items-center rounded-full border border-[var(--border-subtle)] bg-[var(--bg-surface)] px-2.5 py-0.5 text-sm font-medium">{{ selectedExtension }}</span> file
       extension:
       <div style="margin-top: 10px">
-        <n-tag round :bordered="false" type="primary" style="margin-right: 10px">
-          {{ mimeTypeFound }}
-        </n-tag>
+        <span class="inline-flex items-center rounded-full bg-[var(--accent-cyan)]/15 text-[var(--accent-cyan)] px-2.5 py-0.5 text-sm font-medium mr-2">{{ mimeTypeFound }}</span>
       </div>
     </div>
   </c-card>
 
   <div>
-    <n-table>
+    <table class="w-full border-collapse rounded-[var(--radius-sm)] overflow-hidden">
       <thead>
-        <tr>
-          <th>Mime types</th>
-          <th>Extensions</th>
+        <tr class="bg-[var(--bg-surface)]">
+          <th class="border border-[var(--border-subtle)] px-3 py-2 text-left text-sm font-semibold">Mime types</th>
+          <th class="border border-[var(--border-subtle)] px-3 py-2 text-left text-sm font-semibold">Extensions</th>
         </tr>
       </thead>
       <tbody>
-        <tr v-for="{ mimeType, extensions } of mimeInfos" :key="mimeType">
-          <td>{{ mimeType }}</td>
-          <td>
-            <n-tag v-for="extension of extensions" :key="extension" round :bordered="false" style="margin-right: 10px">
+        <tr v-for="{ mimeType, extensions } of mimeInfos" :key="mimeType" class="border-b border-[var(--border-subtle)]">
+          <td class="px-3 py-2 text-sm">{{ mimeType }}</td>
+          <td class="px-3 py-2 text-sm">
+            <span v-for="extension of extensions" :key="extension" class="inline-flex items-center rounded-full border border-[var(--border-subtle)] bg-[var(--bg-surface)] px-2 py-0.5 text-xs font-medium mr-2 mb-1">
               .{{ extension }}
-            </n-tag>
+            </span>
           </td>
         </tr>
       </tbody>
-    </n-table>
+    </table>
   </div>
 </template>

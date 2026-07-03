@@ -2,12 +2,10 @@
 import { tryOnBeforeUnmount, useVModel } from '@vueuse/core';
 import { Editor, EditorContent } from '@tiptap/vue-3';
 import StarterKit from '@tiptap/starter-kit';
-import { useThemeVars } from 'naive-ui';
 import MenuBar from './menu-bar.vue';
 
 const props = defineProps<{ html: string }>();
 const emit = defineEmits(['update:html']);
-const themeVars = useThemeVars();
 const html = useVModel(props, 'html', emit);
 
 const editor = new Editor({
@@ -23,11 +21,11 @@ tryOnBeforeUnmount(() => {
 </script>
 
 <template>
-  <c-card v-if="editor" important:p0>
+  <c-card v-if="editor" class="!p-0">
     <MenuBar class="editor-header" :editor="editor" />
-    <n-divider style="margin-top: 0" />
+    <hr class="m-0 border-t border-[var(--border-subtle)]" />
 
-    <div px8 pb6>
+    <div class="px-8 pb-6">
       <EditorContent class="editor-content" :editor="editor" />
     </div>
   </c-card>
@@ -37,9 +35,7 @@ tryOnBeforeUnmount(() => {
 ::v-deep(.ProseMirror-focused) {
   outline: none;
 }
-</style>
 
-<style scoped lang="less">
 ::v-deep(.ProseMirror) {
   > * + * {
     margin-top: 0.75em;
@@ -64,14 +60,14 @@ tryOnBeforeUnmount(() => {
   }
 
   code {
-    background-color: v-bind('themeVars.codeColor');
+    background-color: var(--bg-surface-2);
     padding: 2px 4px;
     border-radius: 5px;
     font-size: 85%;
   }
 
   pre {
-    background: v-bind('themeVars.codeColor');
+    background: var(--bg-surface-2);
     font-family: monospace;
     padding: 0.75rem 1rem;
     border-radius: 0.5rem;
@@ -99,12 +95,12 @@ tryOnBeforeUnmount(() => {
 
   blockquote {
     padding-left: 1rem;
-    border-left: 2px solid rgba(#0d0d0d, 0.1);
+    border-left: 2px solid rgba(13, 13, 13, 0.1);
   }
 
   hr {
     border: none;
-    border-top: 2px solid rgba(#0d0d0d, 0.1);
+    border-top: 2px solid rgba(13, 13, 13, 0.1);
     margin: 2rem 0;
   }
 

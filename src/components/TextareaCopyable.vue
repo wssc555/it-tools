@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { Copy } from '@vicons/tabler';
+import { IconCopy } from '@tabler/icons-vue';
 import { useElementSize } from '@vueuse/core';
 import hljs from 'highlight.js/lib/core';
 import jsonHljs from 'highlight.js/lib/languages/json';
@@ -43,19 +43,16 @@ const tooltipText = computed(() => isJustCopied.value ? 'Copied!' : copyMessage.
 <template>
   <div style="overflow-x: hidden; width: 100%">
     <c-card relative>
-      <n-scrollbar
-        x-scrollable
-        trigger="none"
-        :style="height ? `min-height: ${height - 40 /* card padding */ + 10 /* negative margin compensation */}px` : ''"
+      <div
+        class="overflow-auto"
+        :style="height ? `min-height: ${height - 30}px` : ''"
       >
-        <n-config-provider :hljs="hljs">
-          <n-code :code="value" :language="language" :trim="false" data-test-id="area-content" />
-        </n-config-provider>
-      </n-scrollbar>
+        <pre class="m-0 p-0"><code class="hljs" :class="`language-${language}`" data-test-id="area-content">{{ value }}</code></pre>
+      </div>
       <div absolute right-10px top-10px>
         <c-tooltip v-if="value" :tooltip="tooltipText" position="left">
           <c-button circle important:h-10 important:w-10 @click="copy()">
-            <n-icon size="22" :component="Copy" />
+            <IconCopy size="22" />
           </c-button>
         </c-tooltip>
       </div>
@@ -68,9 +65,4 @@ const tooltipText = computed(() => isJustCopied.value ? 'Copied!' : copyMessage.
   </div>
 </template>
 
-<style lang="less" scoped>
-::v-deep(.n-scrollbar) {
-  padding-bottom: 10px;
-  margin-bottom: -10px;
-}
-</style>
+

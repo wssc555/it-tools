@@ -19,10 +19,16 @@ const showResults = computed(() => !_.isUndefined(leftJson.value) && !_.isUndefi
 
 <template>
   <div v-if="showResults">
-    <div flex justify-center>
-      <n-form-item label="Only show differences" label-placement="left">
-        <n-switch v-model:value="onlyShowDifferences" />
-      </n-form-item>
+    <div flex justify-center items-center gap-3>
+      <label for="diff-toggle" class="text-sm cursor-pointer select-none" @click="onlyShowDifferences = !onlyShowDifferences">Only show differences</label>
+      <input id="diff-toggle" v-model="onlyShowDifferences" type="checkbox" class="sr-only" />
+      <span
+        class="relative inline-block h-5 w-9 shrink-0 cursor-pointer rounded-full transition-colors duration-200"
+        :class="onlyShowDifferences ? 'bg-[var(--accent-cyan)]' : 'bg-[var(--border-default)]'"
+        @click="onlyShowDifferences = !onlyShowDifferences"
+      >
+        <span class="absolute left-0.5 top-0.5 inline-block h-4 w-4 rounded-full bg-white shadow transition-transform duration-200" :class="onlyShowDifferences ? 'translate-x-4' : 'translate-x-0'" />
+      </span>
     </div>
 
     <c-card data-test-id="diff-result">

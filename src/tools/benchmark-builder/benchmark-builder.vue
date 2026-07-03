@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { Plus, Trash } from '@vicons/tabler';
+import { IconPlus, IconTrash } from '@tabler/icons-vue';
 import { useStorage } from '@vueuse/core';
 import _ from 'lodash';
 
@@ -79,7 +79,7 @@ function copyAsBulletList() {
 </script>
 
 <template>
-  <n-scrollbar style="flex: 1" x-scrollable>
+  <div class="overflow-auto" style="flex: 1">
     <div mb-5 flex flex-1 flex-nowrap justify-center gap-12px>
       <div v-for="(suite, index) of suites" :key="index">
         <c-card style="width: 294px">
@@ -91,28 +91,27 @@ function copyAsBulletList() {
             clearable
           />
 
-          <n-divider />
-          <n-form-item label="Suite values" :show-feedback="false">
+          <hr class="my-3 border-0 h-px bg-[var(--border-subtle)]" />
+          <label class="block text-sm font-medium text-[var(--text-secondary)] mb-1">Suite values</label>
             <DynamicValues v-model:values="suite.data" />
-          </n-form-item>
         </c-card>
 
         <div flex justify-center>
           <c-button v-if="suites.length > 1" variant="text" @click="suites.splice(index, 1)">
-            <n-icon :component="Trash" depth="3" mr-2 size="18" />
+            <IconTrash size="18" class="mr-2 opacity-60" />
             Delete suite
           </c-button>
           <c-button
             variant="text"
             @click="suites.splice(index + 1, 0, { data: [0], title: `Suite ${suites.length + 1}` })"
           >
-            <n-icon :component="Plus" depth="3" mr-2 size="18" />
+            <IconPlus size="18" class="mr-2 opacity-60" />
             Add suite
           </c-button>
         </div>
       </div>
     </div>
-  </n-scrollbar>
+  </div>
 
   <div style="flex: 0 0 100%">
     <div style="max-width: 600px; margin: 0 auto">

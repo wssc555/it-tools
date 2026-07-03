@@ -26,14 +26,21 @@ const [certs, refreshCerts] = computedRefreshableAsync(
 
 <template>
   <div style="flex: 0 0 100%">
-    <div item-style="flex: 1 1 0" style="max-width: 600px" mx-auto flex gap-3>
-      <n-form-item label="Bits :" v-bind="bitsValidationAttrs as any" label-placement="left" label-width="100">
-        <n-input-number v-model:value="bits" min="256" max="16384" step="8" />
-      </n-form-item>
+    <div class="mx-auto flex max-w-[600px] items-end gap-3" style="flex: 1 1 0">
+      <div class="flex flex-col gap-1">
+        <label class="text-sm text-[var(--text-secondary)]" style="min-width: 100px;">Bits:</label>
+        <input
+          v-model.number="bits"
+          type="number"
+          min="256"
+          max="16384"
+          step="8"
+          class="h-10 w-32 rounded-[var(--radius-sm)] border border-[var(--border-subtle)] bg-[var(--surface-input)] px-3 text-[var(--text-primary)] outline-none transition-colors focus:border-[var(--accent-primary)] focus:shadow-[0_0_0_2px_var(--accent-primary-glow)]"
+        />
+        <span v-if="bitsValidationAttrs.validationStatus === 'error'" class="text-xs text-[var(--state-danger)]">{{ bitsValidationAttrs.validationErrorMessage }}</span>
+      </div>
 
-      <c-button @click="refreshCerts">
-        Refresh key-pair
-      </c-button>
+      <c-button @click="refreshCerts">Refresh key-pair</c-button>
     </div>
   </div>
 

@@ -15,27 +15,42 @@ const { copy } = useCopy({ source: obfuscatedString });
   <div>
     <c-input-text v-model:value="str" raw-text placeholder="Enter string to obfuscate" label="String to obfuscate:" clearable multiline />
 
-    <div mt-4 flex gap-10px>
+    <div class="mt-4 flex gap-2.5">
       <div>
-        <div>Keep first:</div>
-        <n-input-number v-model:value="keepFirst" min="0" />
+        <div class="mb-1 text-sm text-[var(--text-secondary)]">Keep first:</div>
+        <input
+          v-model.number="keepFirst"
+          type="number"
+          min="0"
+          class="h-10 w-24 rounded-[var(--radius-sm)] border border-[var(--border-subtle)] bg-[var(--surface-input)] px-3 text-[var(--text-primary)] outline-none transition-colors focus:border-[var(--accent-primary)] focus:shadow-[0_0_0_2px_var(--accent-primary-glow)]"
+        />
       </div>
 
       <div>
-        <div>Keep last:</div>
-        <n-input-number v-model:value="keepLast" min="0" />
+        <div class="mb-1 text-sm text-[var(--text-secondary)]">Keep last:</div>
+        <input
+          v-model.number="keepLast"
+          type="number"
+          min="0"
+          class="h-10 w-24 rounded-[var(--radius-sm)] border border-[var(--border-subtle)] bg-[var(--surface-input)] px-3 text-[var(--text-primary)] outline-none transition-colors focus:border-[var(--accent-primary)] focus:shadow-[0_0_0_2px_var(--accent-primary-glow)]"
+        />
       </div>
 
       <div>
-        <div mb-5px>
-          Keep&nbsp;spaces:
-        </div>
-        <n-switch v-model:value="keepSpace" />
+        <div class="mb-1 text-sm text-[var(--text-secondary)]">Keep spaces:</div>
+        <label class="flex cursor-pointer items-center gap-2">
+          <input
+            v-model="keepSpace"
+            type="checkbox"
+            class="h-5 w-5 cursor-pointer accent-[var(--accent-primary)]"
+          />
+          <span class="text-sm text-[var(--text-primary)]">Enabled</span>
+        </label>
       </div>
     </div>
 
-    <c-card v-if="obfuscatedString" mt-60px max-w-600px flex items-center gap-5px font-mono>
-      <div break-anywhere text-wrap>
+    <c-card v-if="obfuscatedString" class="mt-15 max-w-[600px] flex items-center gap-1.5 font-mono">
+      <div class="break-anywhere text-wrap">
         {{ obfuscatedString }}
       </div>
 

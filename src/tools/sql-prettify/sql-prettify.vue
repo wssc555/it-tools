@@ -19,10 +19,10 @@ const prettySQL = computed(() => formatSQL(rawSQL.value, config));
 
 <template>
   <div style="flex: 0 0 100%">
-    <div style="max-width: 600px" :class="{ 'flex-col': styleStore.isSmallScreen }" mx-auto mb-5 flex gap-2>
+    <div style="max-width: 600px" :class="{ 'flex-col': styleStore.isSmallScreen }" class="mx-auto mb-5 flex gap-2">
       <c-select
         v-model:value="config.language"
-        flex-1
+        class="flex-1"
         label="Dialect"
         :options="[
           { label: 'GCP BigQuery', value: 'bigquery' },
@@ -42,7 +42,7 @@ const prettySQL = computed(() => formatSQL(rawSQL.value, config));
       />
       <c-select
         v-model:value="config.keywordCase" label="Keyword case"
-        flex-1
+        class="flex-1"
         :options="[
           { label: 'UPPERCASE', value: 'upper' },
           { label: 'lowercase', value: 'lower' },
@@ -51,7 +51,7 @@ const prettySQL = computed(() => formatSQL(rawSQL.value, config));
       />
       <c-select
         v-model:value="config.indentStyle" label="Indent style"
-        flex-1
+        class="flex-1"
         :options="[
           { label: 'Standard', value: 'standard' },
           { label: 'Tabular left', value: 'tabularLeft' },
@@ -61,7 +61,8 @@ const prettySQL = computed(() => formatSQL(rawSQL.value, config));
     </div>
   </div>
 
-  <n-form-item label="Your SQL query">
+  <div class="mb-4">
+    <label class="mb-1 block text-sm text-[var(--text-secondary)]">Your SQL query:</label>
     <c-input-text
       ref="inputElement"
       v-model:value="rawSQL"
@@ -74,19 +75,9 @@ const prettySQL = computed(() => formatSQL(rawSQL.value, config));
       spellcheck="false"
       monospace
     />
-  </n-form-item>
-  <n-form-item label="Prettify version of your query">
+  </div>
+  <div>
+    <label class="mb-1 block text-sm text-[var(--text-secondary)]">Prettify version of your query:</label>
     <TextareaCopyable :value="prettySQL" language="sql" :follow-height-of="inputElement" />
-  </n-form-item>
+  </div>
 </template>
-
-<style lang="less" scoped>
-.result-card {
-  position: relative;
-  .copy-button {
-    position: absolute;
-    top: 10px;
-    right: 10px;
-  }
-}
-</style>

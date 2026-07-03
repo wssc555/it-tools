@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import JSON5 from 'json5';
 import { useStorage } from '@vueuse/core';
-import { Copy } from '@vicons/tabler';
+import { IconCopy } from '@tabler/icons-vue';
 import { formatJson } from './json.models';
 import { withDefaultOnError } from '@/utils/defaults';
 import { useValidation } from '@/composable/validation';
@@ -34,11 +34,26 @@ const { copy: copyOutput, isJustCopied } = useCopy({ source: cleanJson, createTo
     <div class="controls-row">
       <div class="control-item">
         <span class="control-label">Sort keys</span>
-        <n-switch v-model:value="sortKeys" />
+        <label class="inline-flex items-center cursor-pointer">
+          <input type="checkbox" v-model="sortKeys" class="sr-only" />
+          <span
+            class="relative inline-block h-5 w-9 shrink-0 rounded-full transition-colors duration-200"
+            :class="sortKeys ? 'bg-[var(--accent-cyan)]' : 'bg-[var(--border-default)]'"
+            @click="sortKeys = !sortKeys"
+          >
+            <span class="absolute left-0.5 top-0.5 inline-block h-4 w-4 rounded-full bg-white shadow transition-transform duration-200" :class="sortKeys ? 'translate-x-4' : 'translate-x-0'" />
+          </span>
+        </label>
       </div>
       <div class="control-item">
         <span class="control-label">Indent size</span>
-        <n-input-number v-model:value="indentSize" min="0" max="10" class="control-input" />
+        <input
+          v-model.number="indentSize"
+          type="number"
+          min="0"
+          max="10"
+          class="w-20 rounded-[var(--radius-sm)] border border-[var(--border-default)] bg-[var(--bg-surface)] px-2 py-1 text-sm text-[var(--text-primary)] outline-none focus:border-[var(--accent-cyan)]"
+        />
       </div>
     </div>
 
@@ -84,28 +99,21 @@ const { copy: copyOutput, isJustCopied } = useCopy({ source: cleanJson, createTo
               :class="{ copied: isJustCopied }"
               @click="copyOutput()"
             >
-              <n-icon size="20" :component="Copy" />
+              <IconCopy size="20" />
             </c-button>
           </c-tooltip>
         </template>
         <div class="output-content">
-          <n-scrollbar
-            x-scrollable
-            trigger="none"
-          >
-            <n-config-provider>
-              <n-code
+          <div class="overflow-auto">
+              <pre
                 v-if="cleanJson"
-                :code="cleanJson"
-                language="json"
-                :trim="false"
+                class="m-0 p-0 text-[13px] leading-relaxed font-mono text-[var(--text-primary)] whitespace-pre"
                 data-test-id="area-content"
-              />
+              >{{ cleanJson }}</pre>
               <div v-else class="output-placeholder">
                 Valid JSON output will appear here
               </div>
-            </n-config-provider>
-          </n-scrollbar>
+            </div>
         </div>
       </WorkbenchPanel>
     </div>

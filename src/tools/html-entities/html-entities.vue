@@ -14,7 +14,8 @@ const { copy: copyUnescaped } = useCopy({ source: unescapeOutput });
 
 <template>
   <c-card title="Escape html entities">
-    <n-form-item label="Your string :">
+    <div class="mb-4">
+      <label class="mb-1 block text-sm text-[var(--text-secondary)]">Your string:</label>
       <c-input-text
         v-model:value="escapeInput"
         multiline
@@ -23,9 +24,10 @@ const { copy: copyUnescaped } = useCopy({ source: unescapeOutput });
         autosize
         raw-text
       />
-    </n-form-item>
+    </div>
 
-    <n-form-item label="Your string escaped :">
+    <div class="mb-4">
+      <label class="mb-1 block text-sm text-[var(--text-secondary)]">Your string escaped:</label>
       <c-input-text
         multiline
         readonly
@@ -34,16 +36,15 @@ const { copy: copyUnescaped } = useCopy({ source: unescapeOutput });
         rows="3"
         autosize
       />
-    </n-form-item>
+    </div>
 
-    <div flex justify-center>
-      <c-button @click="copyEscaped()">
-        Copy
-      </c-button>
+    <div class="flex justify-center">
+      <c-button @click="copyEscaped()">Copy</c-button>
     </div>
   </c-card>
   <c-card title="Unescape html entities">
-    <n-form-item label="Your escaped string :">
+    <div class="mb-4">
+      <label class="mb-1 block text-sm text-[var(--text-secondary)]">Your escaped string:</label>
       <c-input-text
         v-model:value="unescapeInput"
         multiline
@@ -52,9 +53,10 @@ const { copy: copyUnescaped } = useCopy({ source: unescapeOutput });
         autosize
         raw-text
       />
-    </n-form-item>
+    </div>
 
-    <n-form-item label="Your string unescaped :">
+    <div class="mb-4">
+      <label class="mb-1 block text-sm text-[var(--text-secondary)]">Your string unescaped:</label>
       <c-input-text
         :value="unescapeOutput"
         multiline
@@ -63,12 +65,10 @@ const { copy: copyUnescaped } = useCopy({ source: unescapeOutput });
         rows="3"
         autosize
       />
-    </n-form-item>
+    </div>
 
-    <div flex justify-center>
-      <c-button @click="copyUnescaped()">
-        Copy
-      </c-button>
+    <div class="flex justify-center">
+      <c-button @click="copyUnescaped()">Copy</c-button>
     </div>
   </c-card>
 </template>

@@ -7,7 +7,7 @@ const { isDarkTheme } = toRefs(styleStore);
 </script>
 
 <template>
-  <div class="navbar-btn-wrapper">
+  <div class="flex items-center gap-0.5">
     <c-tooltip :tooltip="$t('home.nav.github')" position="bottom">
       <c-button
         circle
@@ -17,7 +17,7 @@ const { isDarkTheme } = toRefs(styleStore);
         rel="noopener noreferrer"
         :aria-label="$t('home.nav.githubRepository')"
       >
-        <n-icon size="22" :component="IconBrandGithub" />
+        <IconBrandGithub size="22" />
       </c-button>
     </c-tooltip>
 
@@ -30,31 +30,25 @@ const { isDarkTheme } = toRefs(styleStore);
         target="_blank"
         :aria-label="$t('home.nav.twitterXAccount')"
       >
-        <n-icon size="22" :component="IconBrandX" />
+        <IconBrandX size="22" />
       </c-button>
     </c-tooltip>
 
     <c-tooltip :tooltip="$t('home.nav.about')" position="bottom">
       <c-button circle variant="text" to="/about" :aria-label="$t('home.nav.aboutLabel')">
-        <n-icon size="22" :component="IconInfoCircle" />
+        <IconInfoCircle size="22" />
       </c-button>
     </c-tooltip>
     <c-tooltip :tooltip="isDarkTheme ? $t('home.nav.lightMode') : $t('home.nav.darkMode')" position="bottom">
       <c-button circle variant="text" :aria-label="$t('home.nav.mode')" @click="() => styleStore.toggleDark()">
-        <n-icon v-if="isDarkTheme" size="22" :component="IconSun" />
-        <n-icon v-else size="22" :component="IconMoon" />
+        <IconSun v-if="isDarkTheme" size="22" />
+        <IconMoon v-else size="22" />
       </c-button>
     </c-tooltip>
   </div>
 </template>
 
 <style lang="less" scoped>
-.navbar-btn-wrapper {
-  display: flex;
-  align-items: center;
-  gap: 2px;
-}
-
 ::v-deep(.c-button) {
   width: 36px;
   height: 36px;
@@ -63,15 +57,15 @@ const { isDarkTheme } = toRefs(styleStore);
   position: relative;
 
   &:hover {
-    background: rgba(34, 211, 238, 0.1) !important;
+    background: color-mix(in srgb, var(--accent-primary), transparent 88%) !important;
   }
 
   &:active {
-    background: rgba(34, 211, 238, 0.18) !important;
+    background: color-mix(in srgb, var(--accent-primary), transparent 80%) !important;
   }
 
   &:focus-visible {
-    box-shadow: 0 0 0 2px var(--bg-app), 0 0 0 4px var(--accent-cyan) !important;
+    box-shadow: 0 0 0 2px var(--bg-app), 0 0 0 4px var(--accent-primary) !important;
   }
 }
 </style>

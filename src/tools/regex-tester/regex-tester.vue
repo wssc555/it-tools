@@ -104,28 +104,34 @@ watchEffect(
       <router-link target="_blank" to="/regex-memo" mb-1 mt-1>
         See Regular Expression Cheatsheet
       </router-link>
-      <n-space>
-        <n-checkbox v-model:checked="global">
-          <span title="Global search">Global search. (<code>g</code>)</span>
-        </n-checkbox>
-        <n-checkbox v-model:checked="ignoreCase">
-          <span title="Case-insensitive search">Case-insensitive search. (<code>i</code>)</span>
-        </n-checkbox>
-        <n-checkbox v-model:checked="multiline">
-          <span title="Allows ^ and $ to match next to newline characters.">Multiline(<code>m</code>)</span>
-        </n-checkbox>
-        <n-checkbox v-model:checked="dotAll">
-          <span title="Allows . to match newline characters.">Singleline(<code>s</code>)</span>
-        </n-checkbox>
-        <n-checkbox v-model:checked="unicode">
-          <span title="Unicode; treat a pattern as a sequence of Unicode code points.">Unicode(<code>u</code>)</span>
-        </n-checkbox>
-        <n-checkbox v-model:checked="unicodeSets">
-          <span title="An upgrade to the u mode with more Unicode features.">Unicode Sets (<code>v</code>)</span>
-        </n-checkbox>
-      </n-space>
+      <div class="flex flex-wrap gap-x-4 gap-y-2">
+        <label class="flex items-center gap-1.5 cursor-pointer select-none">
+          <input type="checkbox" v-model="global" class="h-4 w-4 rounded border-[var(--border-default)] text-[var(--accent-cyan)] focus:ring-[var(--accent-cyan)]" />
+          <span class="text-sm"><span title="Global search">Global search. (<code>g</code>)</span></span>
+        </label>
+        <label class="flex items-center gap-1.5 cursor-pointer select-none">
+          <input type="checkbox" v-model="ignoreCase" class="h-4 w-4 rounded border-[var(--border-default)] text-[var(--accent-cyan)] focus:ring-[var(--accent-cyan)]" />
+          <span class="text-sm"><span title="Case-insensitive search">Case-insensitive search. (<code>i</code>)</span></span>
+        </label>
+        <label class="flex items-center gap-1.5 cursor-pointer select-none">
+          <input type="checkbox" v-model="multiline" class="h-4 w-4 rounded border-[var(--border-default)] text-[var(--accent-cyan)] focus:ring-[var(--accent-cyan)]" />
+          <span class="text-sm"><span title="Allows ^ and $ to match next to newline characters.">Multiline(<code>m</code>)</span></span>
+        </label>
+        <label class="flex items-center gap-1.5 cursor-pointer select-none">
+          <input type="checkbox" v-model="dotAll" class="h-4 w-4 rounded border-[var(--border-default)] text-[var(--accent-cyan)] focus:ring-[var(--accent-cyan)]" />
+          <span class="text-sm"><span title="Allows . to match newline characters.">Singleline(<code>s</code>)</span></span>
+        </label>
+        <label class="flex items-center gap-1.5 cursor-pointer select-none">
+          <input type="checkbox" v-model="unicode" class="h-4 w-4 rounded border-[var(--border-default)] text-[var(--accent-cyan)] focus:ring-[var(--accent-cyan)]" />
+          <span class="text-sm"><span title="Unicode; treat a pattern as a sequence of Unicode code points.">Unicode(<code>u</code>)</span></span>
+        </label>
+        <label class="flex items-center gap-1.5 cursor-pointer select-none">
+          <input type="checkbox" v-model="unicodeSets" class="h-4 w-4 rounded border-[var(--border-default)] text-[var(--accent-cyan)] focus:ring-[var(--accent-cyan)]" />
+          <span class="text-sm"><span title="An upgrade to the u mode with more Unicode features.">Unicode Sets (<code>v</code>)</span></span>
+        </label>
+      </div>
 
-      <n-divider />
+      <hr class="my-3 border-0 h-px bg-[var(--border-subtle)]" />
 
       <c-input-text
         v-model:value="text"
@@ -137,35 +143,27 @@ watchEffect(
     </c-card>
 
     <c-card title="Matches" mb-1 mt-3>
-      <n-table v-if="results?.length > 0">
+      <table v-if="results?.length > 0" class="w-full border-collapse rounded-[var(--radius-sm)] overflow-hidden">
         <thead>
-          <tr>
-            <th scope="col">
-              Index in text
-            </th>
-            <th scope="col">
-              Value
-            </th>
-            <th scope="col">
-              Captures
-            </th>
-            <th scope="col">
-              Groups
-            </th>
+          <tr class="bg-[var(--bg-surface)]">
+            <th scope="col" class="border border-[var(--border-subtle)] px-3 py-2 text-left text-sm font-semibold">Index in text</th>
+            <th scope="col" class="border border-[var(--border-subtle)] px-3 py-2 text-left text-sm font-semibold">Value</th>
+            <th scope="col" class="border border-[var(--border-subtle)] px-3 py-2 text-left text-sm font-semibold">Captures</th>
+            <th scope="col" class="border border-[var(--border-subtle)] px-3 py-2 text-left text-sm font-semibold">Groups</th>
           </tr>
         </thead>
         <tbody>
-          <tr v-for="match of results" :key="match.index">
-            <td>{{ match.index }}</td>
-            <td>{{ match.value }}</td>
-            <td>
+          <tr v-for="match of results" :key="match.index" class="border-b border-[var(--border-subtle)]">
+            <td class="px-3 py-2 text-sm">{{ match.index }}</td>
+            <td class="px-3 py-2 text-sm">{{ match.value }}</td>
+            <td class="px-3 py-2 text-sm">
               <ul>
                 <li v-for="capture in match.captures" :key="capture.name">
                   "{{ capture.name }}" = {{ capture.value }} [{{ capture.start }} - {{ capture.end }}]
                 </li>
               </ul>
             </td>
-            <td>
+            <td class="px-3 py-2 text-sm">
               <ul>
                 <li v-for="group in match.groups" :key="group.name">
                   "{{ group.name }}" = {{ group.value }} [{{ group.start }} - {{ group.end }}]
@@ -174,7 +172,7 @@ watchEffect(
             </td>
           </tr>
         </tbody>
-      </n-table>
+      </table>
       <c-alert v-else>
         No match
       </c-alert>

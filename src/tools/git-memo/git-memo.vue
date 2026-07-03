@@ -1,8 +1,5 @@
 <script setup lang="ts">
-import { useThemeVars } from 'naive-ui';
 import Memo from './git-memo.content.md';
-
-const themeVars = useThemeVars();
 </script>
 
 <template>
@@ -15,7 +12,7 @@ const themeVars = useThemeVars();
 ::v-deep(pre) {
   margin: 0;
   padding: 15px 22px;
-  background-color: v-bind('themeVars.cardColor');
+  background-color: var(--surface-card);
   border-radius: 4px;
   overflow: auto;
 }

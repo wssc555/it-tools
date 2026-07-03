@@ -23,14 +23,29 @@ const rules: UseValidationRule<string>[] = [
 </script>
 
 <template>
-  <div important:flex-full important:flex-shrink-0 important:flex-grow-0>
-    <div flex justify-center>
-      <n-form-item label="Collapse content:" label-placement="left">
-        <n-switch v-model:value="collapseContent" />
-      </n-form-item>
-      <n-form-item label="Indent size:" label-placement="left" label-width="100" :show-feedback="false">
-        <n-input-number v-model:value="indentSize" min="0" max="10" w-100px />
-      </n-form-item>
+  <div flex-full shrink-0 grow-0>
+    <div flex justify-center items-center gap-6>
+      <label class="flex items-center gap-2 cursor-pointer select-none">
+        <span class="text-sm">Collapse content:</span>
+        <input type="checkbox" v-model="collapseContent" class="sr-only" />
+        <span
+          class="relative inline-block h-5 w-9 shrink-0 rounded-full transition-colors duration-200"
+          :class="collapseContent ? 'bg-[var(--accent-cyan)]' : 'bg-[var(--border-default)]'"
+          @click="collapseContent = !collapseContent"
+        >
+          <span class="absolute left-0.5 top-0.5 inline-block h-4 w-4 rounded-full bg-white shadow transition-transform duration-200" :class="collapseContent ? 'translate-x-4' : 'translate-x-0'" />
+        </span>
+      </label>
+      <label class="flex items-center gap-2 text-sm">
+        <span>Indent size:</span>
+        <input
+          v-model.number="indentSize"
+          type="number"
+          min="0"
+          max="10"
+          class="w-20 rounded-[var(--radius-sm)] border border-[var(--border-default)] bg-[var(--bg-surface)] px-2 py-1 text-sm text-[var(--text-primary)] outline-none focus:border-[var(--accent-cyan)]"
+        />
+      </label>
     </div>
   </div>
 

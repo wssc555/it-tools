@@ -80,24 +80,24 @@ async function onUpload(file: File) {
 
 <template>
   <c-card title="Base64 to file">
-    <n-grid cols="3" x-gap="12">
-      <n-gi span="2">
+    <div class="grid grid-cols-3 gap-3">
+      <div class="col-span-2">
         <c-input-text
           v-model:value="fileName"
           label="File Name"
           placeholder="Download filename"
           mb-2
         />
-      </n-gi>
-      <n-gi>
+      </div>
+      <div>
         <c-input-text
           v-model:value="fileExtension"
           label="Extension"
           placeholder="Extension"
           mb-2
         />
-      </n-gi>
-    </n-grid>
+      </div>
+    </div>
     <c-input-text
       v-model:value="base64Input"
       multiline
@@ -133,8 +133,4 @@ async function onUpload(file: File) {
   </c-card>
 </template>
 
-<style lang="less" scoped>
-::v-deep(.n-upload-trigger) {
-  width: 100%;
-}
-</style>
+

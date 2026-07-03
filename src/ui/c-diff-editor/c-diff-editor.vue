@@ -54,15 +54,17 @@ onMounted(() => {
     minimap: {
       enabled: false,
     },
+    renderMarginRevertIcon: false,
+    renderOverviewRuler: false,
   });
 
   editor.setModel({
-    original: monaco.editor.createModel('original text', 'txt'),
-    modified: monaco.editor.createModel('modified text', 'txt'),
+    original: monaco.editor.createModel('', 'txt'),
+    modified: monaco.editor.createModel('', 'txt'),
   });
 });
 </script>
 
 <template>
-  <div ref="editorContainer" h-600px />
+  <div ref="editorContainer" class="h-[calc(100vh-200px)] min-h-[300px]" />
 </template>

@@ -25,21 +25,47 @@ const { copy } = useCopy({ source: loremIpsumText, text: 'Lorem ipsum copied to 
 
 <template>
   <c-card>
-    <n-form-item label="Paragraphs" :show-feedback="false" label-width="200" label-placement="left">
-      <n-slider v-model:value="paragraphs" :step="1" :min="1" :max="20" />
-    </n-form-item>
-    <n-form-item label="Sentences per paragraph" :show-feedback="false" label-width="200" label-placement="left">
-      <n-slider v-model:value="sentences" range :step="1" :min="1" :max="50" />
-    </n-form-item>
-    <n-form-item label="Words per sentence" :show-feedback="false" label-width="200" label-placement="left">
-      <n-slider v-model:value="words" range :step="1" :min="1" :max="50" />
-    </n-form-item>
-    <n-form-item label="Start with lorem ipsum ?" :show-feedback="false" label-width="200" label-placement="left">
-      <n-switch v-model:value="startWithLoremIpsum" />
-    </n-form-item>
-    <n-form-item label="As html ?" :show-feedback="false" label-width="200" label-placement="left">
-      <n-switch v-model:value="asHTML" />
-    </n-form-item>
+    <div class="flex items-center justify-between gap-4 mb-2">
+      <label class="text-sm text-[var(--text-secondary)] shrink-0 w-[200px]">Paragraphs</label>
+      <div class="flex items-center gap-3 flex-1">
+        <input type="range" v-model.number="paragraphs" :step="1" :min="1" :max="20" class="flex-1 accent-[var(--accent-cyan)]" />
+        <span class="text-sm font-mono w-8 text-right">{{ paragraphs }}</span>
+      </div>
+    </div>
+    <div class="flex items-center justify-between gap-4 mb-2">
+      <label class="text-sm text-[var(--text-secondary)] shrink-0 w-[200px]">Sentences per paragraph</label>
+      <div class="flex items-center gap-3 flex-1">
+        <input type="range" v-model.number="sentences[0]" :step="1" :min="1" :max="sentences[1]" class="flex-1 accent-[var(--accent-cyan)]" />
+        <input type="range" v-model.number="sentences[1]" :step="1" :min="sentences[0]" :max="50" class="flex-1 accent-[var(--accent-cyan)]" />
+        <span class="text-sm font-mono w-16 text-right">{{ sentences[0] }}–{{ sentences[1] }}</span>
+      </div>
+    </div>
+    <div class="flex items-center justify-between gap-4 mb-2">
+      <label class="text-sm text-[var(--text-secondary)] shrink-0 w-[200px]">Words per sentence</label>
+      <div class="flex items-center gap-3 flex-1">
+        <input type="range" v-model.number="words[0]" :step="1" :min="1" :max="words[1]" class="flex-1 accent-[var(--accent-cyan)]" />
+        <input type="range" v-model.number="words[1]" :step="1" :min="words[0]" :max="50" class="flex-1 accent-[var(--accent-cyan)]" />
+        <span class="text-sm font-mono w-16 text-right">{{ words[0] }}–{{ words[1] }}</span>
+      </div>
+    </div>
+    <div class="flex items-center justify-between gap-4 mb-2">
+      <label class="text-sm text-[var(--text-secondary)] shrink-0 w-[200px]">Start with lorem ipsum ?</label>
+      <label class="inline-flex items-center cursor-pointer">
+        <input type="checkbox" v-model="startWithLoremIpsum" class="sr-only" />
+        <span class="relative inline-block h-5 w-9 shrink-0 rounded-full transition-colors duration-200" :class="startWithLoremIpsum ? 'bg-[var(--accent-cyan)]' : 'bg-[var(--border-default)]'" @click="startWithLoremIpsum = !startWithLoremIpsum">
+          <span class="absolute left-0.5 top-0.5 inline-block h-4 w-4 rounded-full bg-white shadow transition-transform duration-200" :class="startWithLoremIpsum ? 'translate-x-4' : 'translate-x-0'" />
+        </span>
+      </label>
+    </div>
+    <div class="flex items-center justify-between gap-4 mb-4">
+      <label class="text-sm text-[var(--text-secondary)] shrink-0 w-[200px]">As html ?</label>
+      <label class="inline-flex items-center cursor-pointer">
+        <input type="checkbox" v-model="asHTML" class="sr-only" />
+        <span class="relative inline-block h-5 w-9 shrink-0 rounded-full transition-colors duration-200" :class="asHTML ? 'bg-[var(--accent-cyan)]' : 'bg-[var(--border-default)]'" @click="asHTML = !asHTML">
+          <span class="absolute left-0.5 top-0.5 inline-block h-4 w-4 rounded-full bg-white shadow transition-transform duration-200" :class="asHTML ? 'translate-x-4' : 'translate-x-0'" />
+        </span>
+      </label>
+    </div>
 
     <c-input-text :value="loremIpsumText" multiline placeholder="Your lorem ipsum..." readonly mt-5 rows="5" />
 

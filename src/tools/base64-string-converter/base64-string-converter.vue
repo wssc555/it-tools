@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { Copy } from '@vicons/tabler';
+import { IconCopy } from '@tabler/icons-vue';
 import { useCopy } from '@/composable/copy';
 import { base64ToText, isValidBase64, textToBase64 } from '@/utils/base64';
 import { withDefaultOnError } from '@/utils/defaults';
@@ -31,10 +31,17 @@ const b64ValidationWatch = [decodeUrlSafe];
     <!-- Encode Section -->
     <WorkbenchPanel label="String to Base64" class="encode-section">
       <div class="section-controls">
-        <n-switch v-model:value="encodeUrlSafe">
-          <template #checked>URL Safe</template>
-          <template #unchecked>Standard</template>
-        </n-switch>
+        <label class="inline-flex items-center gap-2 cursor-pointer select-none">
+          <input type="checkbox" v-model="encodeUrlSafe" class="sr-only" />
+          <span
+            class="relative inline-block h-5 w-9 shrink-0 rounded-full transition-colors duration-200"
+            :class="encodeUrlSafe ? 'bg-[var(--accent-cyan)]' : 'bg-[var(--border-default)]'"
+            @click="encodeUrlSafe = !encodeUrlSafe"
+          >
+            <span class="absolute left-0.5 top-0.5 inline-block h-4 w-4 rounded-full bg-white shadow transition-transform duration-200" :class="encodeUrlSafe ? 'translate-x-4' : 'translate-x-0'" />
+          </span>
+          <span class="text-xs font-medium uppercase tracking-wider text-[var(--text-secondary)]">{{ encodeUrlSafe ? 'URL Safe' : 'Standard' }}</span>
+        </label>
       </div>
 
       <div class="workbench-split">
@@ -60,7 +67,7 @@ const b64ValidationWatch = [decodeUrlSafe];
                 :class="{ copied: isBase64Copied }"
                 @click="copyTextBase64()"
               >
-                <n-icon size="18" :component="Copy" />
+                <IconCopy size="18" />
               </c-button>
             </c-tooltip>
           </div>
@@ -74,10 +81,17 @@ const b64ValidationWatch = [decodeUrlSafe];
     <!-- Decode Section -->
     <WorkbenchPanel label="Base64 to String" type="output" class="decode-section">
       <div class="section-controls">
-        <n-switch v-model:value="decodeUrlSafe">
-          <template #checked>URL Safe</template>
-          <template #unchecked>Standard</template>
-        </n-switch>
+        <label class="inline-flex items-center gap-2 cursor-pointer select-none">
+          <input type="checkbox" v-model="decodeUrlSafe" class="sr-only" />
+          <span
+            class="relative inline-block h-5 w-9 shrink-0 rounded-full transition-colors duration-200"
+            :class="decodeUrlSafe ? 'bg-[var(--accent-cyan)]' : 'bg-[var(--border-default)]'"
+            @click="decodeUrlSafe = !decodeUrlSafe"
+          >
+            <span class="absolute left-0.5 top-0.5 inline-block h-4 w-4 rounded-full bg-white shadow transition-transform duration-200" :class="decodeUrlSafe ? 'translate-x-4' : 'translate-x-0'" />
+          </span>
+          <span class="text-xs font-medium uppercase tracking-wider text-[var(--text-secondary)]">{{ decodeUrlSafe ? 'URL Safe' : 'Standard' }}</span>
+        </label>
       </div>
 
       <div class="workbench-split">
@@ -105,7 +119,7 @@ const b64ValidationWatch = [decodeUrlSafe];
                 :class="{ copied: isTextCopied }"
                 @click="copyText()"
               >
-                <n-icon size="18" :component="Copy" />
+                <IconCopy size="18" />
               </c-button>
             </c-tooltip>
           </div>

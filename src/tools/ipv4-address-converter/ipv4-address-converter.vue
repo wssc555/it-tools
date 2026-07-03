@@ -9,26 +9,11 @@ const convertedSections = computed(() => {
   const ipInDecimal = ipv4ToInt({ ip: rawIpAddress.value });
 
   return [
-    {
-      label: 'Decimal: ',
-      value: String(ipInDecimal),
-    },
-    {
-      label: 'Hexadecimal: ',
-      value: convertBase({ fromBase: 10, toBase: 16, value: String(ipInDecimal) }).toUpperCase(),
-    },
-    {
-      label: 'Binary: ',
-      value: convertBase({ fromBase: 10, toBase: 2, value: String(ipInDecimal) }),
-    },
-    {
-      label: 'Ipv6: ',
-      value: ipv4ToIpv6({ ip: rawIpAddress.value }),
-    },
-    {
-      label: 'Ipv6 (short): ',
-      value: ipv4ToIpv6({ ip: rawIpAddress.value, prefix: '::ffff:' }),
-    },
+    { label: 'Decimal: ', value: String(ipInDecimal) },
+    { label: 'Hexadecimal: ', value: convertBase({ fromBase: 10, toBase: 16, value: String(ipInDecimal) }).toUpperCase() },
+    { label: 'Binary: ', value: convertBase({ fromBase: 10, toBase: 2, value: String(ipInDecimal) }) },
+    { label: 'Ipv6: ', value: ipv4ToIpv6({ ip: rawIpAddress.value }) },
+    { label: 'Ipv6 (short): ', value: ipv4ToIpv6({ ip: rawIpAddress.value, prefix: '::ffff:' }) },
   ];
 });
 
@@ -42,18 +27,22 @@ const { attrs: validationAttrs } = useValidation({
   <div>
     <c-input-text v-model:value="rawIpAddress" label="The ipv4 address:" placeholder="The ipv4 address..." />
 
-    <n-divider />
+    <hr class="my-4 border-t border-[var(--border-subtle)]" />
 
-    <input-copyable
+    <InputCopyable
       v-for="{ label, value } of convertedSections"
       :key="label"
       :label="label"
       label-position="left"
       label-width="100px"
       label-align="right"
-      mb-2
+      class="mb-2"
       :value="validationAttrs.validationStatus === 'error' ? '' : value"
       placeholder="Set a correct ipv4 address"
     />
   </div>
 </template>
+
+<script lang="ts">
+import InputCopyable from '../../components/InputCopyable.vue';
+</script>

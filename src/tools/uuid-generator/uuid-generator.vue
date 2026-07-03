@@ -14,10 +14,7 @@ const validUuidRules = [
   {
     message: 'Invalid UUID',
     validator: (value: string) => {
-      if (value === nilUuid) {
-        return true;
-      }
-
+      if (value === nilUuid) return true;
       return Boolean(value.match(/^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/));
     },
   },
@@ -25,12 +22,7 @@ const validUuidRules = [
 
 const generators = {
   NIL: () => nilUuid,
-  v1: (index: number) => generateUuidV1({
-    clockseq: index,
-    msecs: Date.now(),
-    nsecs: Math.floor(Math.random() * 10000),
-    node: Array.from({ length: 6 }, () => Math.floor(Math.random() * 256)),
-  }),
+  v1: (index: number) => generateUuidV1({ clockseq: index, msecs: Date.now(), nsecs: Math.floor(Math.random() * 10000), node: Array.from({ length: 6 }, () => Math.floor(Math.random() * 256)) }),
   v3: () => generateUuidV3(v35Args.value.name, v35Args.value.namespace),
   v4: () => generateUuidV4(),
   v5: () => generateUuidV5(v35Args.value.name, v35Args.value.namespace),
@@ -47,29 +39,31 @@ const { copy } = useCopy({ source: uuids, text: 'UUIDs copied to the clipboard' 
 
 <template>
   <div>
-    <c-buttons-select v-model:value="version" :options="versions" label="UUID version" label-width="100px" mb-2 />
+    <c-buttons-select v-model:value="version" :options="versions" label="UUID version" label-width="100px" class="mb-2" />
 
-    <div mb-2 flex items-center>
-      <span w-100px>Quantity </span>
-      <n-input-number v-model:value="count" flex-1 :min="1" :max="50" placeholder="UUID quantity" />
+    <div class="mb-2 flex items-center gap-2">
+      <span class="w-[100px] text-sm text-[var(--text-secondary)]">Quantity</span>
+      <input
+        v-model.number="count"
+        type="number"
+        :min="1"
+        :max="50"
+        placeholder="UUID quantity"
+        class="h-10 min-w-0 flex-1 rounded-[var(--radius-sm)] border border-[var(--border-subtle)] bg-[var(--surface-input)] px-3 text-[var(--text-primary)] outline-none transition-colors focus:border-[var(--accent-primary)] focus:shadow-[0_0_0_2px_var(--accent-primary-glow)]"
+      />
     </div>
 
     <div v-if="version === 'v3' || version === 'v5'">
       <div>
         <c-buttons-select
           v-model:value="v35Args.namespace"
-          :options="{
-            DNS: '6ba7b810-9dad-11d1-80b4-00c04fd430c8',
-            URL: '6ba7b811-9dad-11d1-80b4-00c04fd430c8',
-            OID: '6ba7b812-9dad-11d1-80b4-00c04fd430c8',
-            X500: '6ba7b814-9dad-11d1-80b4-00c04fd430c8',
-          }"
+          :options="{ DNS: '6ba7b810-9dad-11d1-80b4-00c04fd430c8', URL: '6ba7b811-9dad-11d1-80b4-00c04fd430c8', OID: '6ba7b812-9dad-11d1-80b4-00c04fd430c8', X500: '6ba7b814-9dad-11d1-80b4-00c04fd430c8' }"
           label="Namespace"
           label-width="100px"
-          mb-2
+          class="mb-2"
         />
       </div>
-      <div flex-1>
+      <div class="flex-1">
         <c-input-text
           v-model:value="v35Args.namespace"
           placeholder="Namespace"
@@ -77,7 +71,7 @@ const { copy } = useCopy({ source: uuids, text: 'UUIDs copied to the clipboard' 
           label-position="left"
           label=" "
           :validation-rules="validUuidRules"
-          mb-2
+          class="mb-2"
         />
       </div>
 
@@ -87,7 +81,7 @@ const { copy } = useCopy({ source: uuids, text: 'UUIDs copied to the clipboard' 
         label="Name"
         label-width="100px"
         label-position="left"
-        mb-2
+        class="mb-2"
       />
     </div>
 
@@ -101,17 +95,12 @@ const { copy } = useCopy({ source: uuids, text: 'UUIDs copied to the clipboard' 
       readonly
       raw-text
       monospace
-      my-3
-      class="uuid-display"
+      class="my-3 uuid-display"
     />
 
-    <div flex justify-center gap-3>
-      <c-button autofocus @click="copy()">
-        Copy
-      </c-button>
-      <c-button @click="refreshUUIDs">
-        Refresh
-      </c-button>
+    <div class="flex justify-center gap-3">
+      <c-button autofocus @click="copy()">Copy</c-button>
+      <c-button @click="refreshUUIDs">Refresh</c-button>
     </div>
   </div>
 </template>

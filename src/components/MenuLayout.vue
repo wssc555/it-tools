@@ -3,65 +3,98 @@ import { useStyleStore } from '@/stores/style.store';
 
 const styleStore = useStyleStore();
 const { isMenuCollapsed, isSmallScreen } = toRefs(styleStore);
-const siderPosition = computed(() => (isSmallScreen.value ? 'absolute' : 'static'));
 </script>
 
 <template>
-  <n-layout has-sider :sider-border-color="'transparent'">
-    <n-layout-sider
-      class="glass-sider"
-      collapse-mode="width"
-      :collapsed-width="0"
-      :width="260"
-      :collapsed="isMenuCollapsed"
-      :show-trigger="false"
-      :native-scrollbar="false"
-      :position="siderPosition"
+  <div class="menu-layout-root">
+    <!-- Sider / Sidebar -->
+    <aside
+      class="menu-layout-sider"
+      :class="{
+        'menu-layout-sider--collapsed': isMenuCollapsed,
+        'menu-layout-sider--overlay': isSmallScreen,
+      }"
     >
-      <slot name="sider" />
-    </n-layout-sider>
-    <n-layout class="content">
-      <slot name="content" />
-      <div v-show="isSmallScreen && !isMenuCollapsed" class="overlay" @click="isMenuCollapsed = true" />
-    </n-layout>
-  </n-layout>
+      <div class="menu-layout-sider-scroll">
+        <slot name="sider" />
+      </div>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="menu-layout-content">
+      <div class="menu-layout-content-inner">
+        <slot name="content" />
+      </div>
+    </main>
+
+    <!-- Overlay for mobile when menu is open -->
+    <div
+      v-show="isSmallScreen && !isMenuCollapsed"
+      class="menu-layout-overlay"
+      @click="isMenuCollapsed = true"
+    />
+  </div>
 </template>
 
 <style lang="less" scoped>
-.glass-sider {
+.menu-layout-root {
+  display: flex;
+  height: 100vh;
+  width: 100%;
+  overflow: hidden;
+  position: relative;
+}
+
+.menu-layout-sider {
+  width: 260px;
+  flex-shrink: 0;
   background: var(--bg-glass);
   backdrop-filter: blur(14px);
   -webkit-backdrop-filter: blur(14px);
+  overflow-y: auto;
+  transition: margin-left 0.3s ease, width 0.3s ease;
+  position: relative;
+  z-index: 20;
 
-  ::v-deep(.n-layout-sider-scroll-container) {
-    &::-webkit-scrollbar {
-      width: 6px;
-    }
+  &::-webkit-scrollbar { width: 6px; }
+  &::-webkit-scrollbar-track { background: transparent; }
+  &::-webkit-scrollbar-thumb { background: var(--border-subtle); border-radius: 3px; }
 
-    &::-webkit-scrollbar-track {
-      background: transparent;
-    }
+  &--collapsed {
+    margin-left: -260px;
+  }
 
-    &::-webkit-scrollbar-thumb {
-      background: var(--border-subtle);
-      border-radius: 3px;
-    }
+  &--overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 100%;
   }
 }
 
-.content {
+.menu-layout-sider-scroll {
+  min-height: 100%;
+}
+
+.menu-layout-content {
+  flex: 1;
+  overflow-y: auto;
   background: var(--bg-app);
+  min-width: 0;
 
-  ::v-deep(.n-layout-scroll-container) {
-    padding: 24px 32px;
+  &::-webkit-scrollbar { width: 6px; }
+  &::-webkit-scrollbar-track { background: transparent; }
+}
 
-    @media (max-width: 700px) {
-      padding: 16px;
-    }
+.menu-layout-content-inner {
+  padding: 24px 32px;
+
+  @media (max-width: 700px) {
+    padding: 16px;
   }
 }
 
-.overlay {
+.menu-layout-overlay {
   position: fixed;
   top: 0;
   left: 0;
@@ -69,10 +102,6 @@ const siderPosition = computed(() => (isSmallScreen.value ? 'absolute' : 'static
   height: 100%;
   background-color: rgba(0, 0, 0, 0.5);
   cursor: pointer;
-  z-index: 10;
-}
-
-.n-layout {
-  height: 100vh;
+  z-index: 15;
 }
 </style>

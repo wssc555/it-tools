@@ -9,7 +9,7 @@ const output = ref('');
 const errored = ref(false);
 const processing = ref(false);
 
-figlet.defaults({ fontPath: '//unpkg.com/figlet@1.6.0/fonts/' });
+figlet.defaults({ fontPath: 'https://unpkg.com/figlet@1.11.0/fonts' });
 
 watchEffect(async () => {
   processing.value = true;
@@ -51,10 +51,10 @@ const fonts = ['1Row', '3-D', '3D Diagonal', '3D-ASCII', '3x5', '4Max', '5 Line 
       rows="4"
     />
 
-    <n-divider />
+    <hr class="my-3 border-0 h-px bg-[var(--border-subtle)]" />
 
-    <n-grid cols="4" x-gap="12" w-full>
-      <n-gi span="2">
+    <div class="grid grid-cols-4 gap-3 w-full">
+      <div class="col-span-2">
         <c-select
           v-model:value="font"
           label-position="top"
@@ -63,18 +63,24 @@ const fonts = ['1Row', '3-D', '3D Diagonal', '3D-ASCII', '3x5', '4Max', '5 Line 
           searchable="true"
           placeholder="Select font to use"
         />
-      </n-gi>
-      <n-gi span="2">
-        <n-form-item label="Width:" label-placement="top" label-width="100" :show-feedback="false">
-          <n-input-number v-model:value="width" min="0" max="10000" w-full placeholder="Width of the text" />
-        </n-form-item>
-      </n-gi>
-    </n-grid>
+      </div>
+      <div class="col-span-2">
+        <label class="block text-sm font-medium text-[var(--text-secondary)] mb-1">Width:</label>
+        <input
+          v-model.number="width"
+          type="number"
+          min="0"
+          max="10000"
+          placeholder="Width of the text"
+          class="w-full rounded-[var(--radius-sm)] border border-[var(--border-default)] bg-[var(--bg-surface)] px-2 py-1 text-sm text-[var(--text-primary)] outline-none focus:border-[var(--accent-cyan)]"
+        />
+      </div>
+    </div>
 
-    <n-divider />
+    <hr class="my-3 border-0 h-px bg-[var(--border-subtle)]" />
 
     <div v-if="processing" flex items-center justify-center>
-      <n-spin size="medium" />
+      <span class="inline-block h-5 w-5 animate-spin rounded-full border-2 border-[var(--border-default)] border-t-[var(--accent-cyan)]" />
       <span class="ml-2">Loading font...</span>
     </div>
 
@@ -82,12 +88,13 @@ const fonts = ['1Row', '3-D', '3D Diagonal', '3D-ASCII', '3x5', '4Max', '5 Line 
       Current settings resulted in error.
     </c-alert>
 
-    <n-form-item v-if="!processing && !errored" label="Ascii Art text:">
+    <div v-if="!processing && !errored">
+      <label class="block text-sm font-medium text-[var(--text-secondary)] mb-1">Ascii Art text:</label>
       <TextareaCopyable
         :value="output"
         mb-1 mt-1
         copy-placement="outside"
       />
-    </n-form-item>
+    </div>
   </c-card>
 </template>

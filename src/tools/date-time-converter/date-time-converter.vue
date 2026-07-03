@@ -170,7 +170,7 @@ function formatDateUsingFormatter(formatter: (date: Date) => string, date?: Date
       />
     </div>
 
-    <n-divider />
+    <hr class="my-4 border-t border-[var(--border-subtle)]" />
 
     <input-copyable
       v-for="{ name, fromDate } in formats"

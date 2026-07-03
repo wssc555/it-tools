@@ -34,7 +34,7 @@ const properties: { title: string; key: keyof URL }[] = [
       :validation-rules="urlValidationRules"
     />
 
-    <n-divider />
+    <hr class="my-4 border-t border-[var(--border-subtle)]" />
 
     <InputCopyable
       v-for="{ title, key } in properties"

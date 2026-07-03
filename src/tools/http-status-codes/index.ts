@@ -1,4 +1,4 @@
-import { HttpRound } from '@vicons/material';
+import { IconHttpPost } from '@tabler/icons-vue';
 import { defineTool } from '../tool';
 
 import { codesByCategories } from './http-status-codes.constants';
@@ -15,6 +15,6 @@ export const tool = defineTool({
     ...codesByCategories.flatMap(({ codes }) => codes.flatMap(({ code, name }) => [String(code), name])),
   ],
   component: () => import('./http-status-codes.vue'),
-  icon: HttpRound,
+  icon: IconHttpPost,
   createdAt: new Date('2023-04-13'),
 });

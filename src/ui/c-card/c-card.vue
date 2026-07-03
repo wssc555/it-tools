@@ -1,18 +1,10 @@
 <script lang="ts" setup>
-import { useTheme } from './c-card.theme';
-
-const props = defineProps<{
-  title?: string
-}>();
-
-const { title } = toRefs(props);
-
-const theme = useTheme();
+defineProps<{ title?: string }>();
 </script>
 
 <template>
-  <div class="c-card">
-    <div v-if="title" class="c-card-title">
+  <div class="rounded-[var(--radius-md)] bg-[var(--surface-card)] px-5 py-4">
+    <div v-if="title" class="mb-5 text-base font-medium text-[var(--text-primary)]">
       {{ title }}
     </div>
     <slot />
@@ -20,16 +12,4 @@ const theme = useTheme();
 </template>
 
 <style lang="less" scoped>
-.c-card {
-  background-color: v-bind('theme.backgroundColor');
-  border: 1px solid v-bind('theme.borderColor');
-  border-radius: 4px;
-  padding: 20px 24px;
-
-  &-title {
-    font-size: 16px;
-    font-weight: 500;
-    margin-bottom: 20px;
-  }
-}
 </style>

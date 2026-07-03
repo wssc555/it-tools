@@ -29,16 +29,15 @@ function printHtml() {
       label="Your Markdown to convert:"
     />
 
-    <n-divider />
+    <hr class="my-4 border-t border-[var(--border-subtle)]" />
 
-    <n-form-item label="Output HTML:">
+    <div class="mb-4">
+      <label class="mb-1 block text-sm text-[var(--text-secondary)]">Output HTML:</label>
       <TextareaCopyable :value="outputHtml" :word-wrap="true" language="html" />
-    </n-form-item>
+    </div>
 
-    <div flex justify-center>
-      <n-button @click="printHtml">
-        Print as PDF
-      </n-button>
+    <div class="flex justify-center">
+      <c-button @click="printHtml">Print as PDF</c-button>
     </div>
   </div>
 </template>

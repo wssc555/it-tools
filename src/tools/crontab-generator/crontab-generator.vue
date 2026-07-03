@@ -123,20 +123,44 @@ const cronValidationRules = [
       {{ cronString }}
     </div>
 
-    <n-divider />
+    <hr class="my-3 border-0 h-px bg-[var(--border-subtle)]" />
 
     <div flex justify-center>
-      <n-form :show-feedback="false" label-width="170" label-placement="left">
-        <n-form-item label="Verbose">
-          <n-switch v-model:value="cronstrueConfig.verbose" />
-        </n-form-item>
-        <n-form-item label="Use 24 hour time format">
-          <n-switch v-model:value="cronstrueConfig.use24HourTimeFormat" />
-        </n-form-item>
-        <n-form-item label="Days start at 0">
-          <n-switch v-model:value="cronstrueConfig.dayOfWeekStartIndexZero" />
-        </n-form-item>
-      </n-form>
+      <div class="flex flex-col items-start gap-2">
+        <label class="flex items-center gap-2 cursor-pointer select-none">
+          <span class="text-sm">Verbose</span>
+          <input type="checkbox" v-model="cronstrueConfig.verbose" class="sr-only" />
+          <span
+            class="relative inline-block h-5 w-9 shrink-0 rounded-full transition-colors duration-200"
+            :class="cronstrueConfig.verbose ? 'bg-[var(--accent-cyan)]' : 'bg-[var(--border-default)]'"
+            @click="cronstrueConfig.verbose = !cronstrueConfig.verbose"
+          >
+            <span class="absolute left-0.5 top-0.5 inline-block h-4 w-4 rounded-full bg-white shadow transition-transform duration-200" :class="cronstrueConfig.verbose ? 'translate-x-4' : 'translate-x-0'" />
+          </span>
+        </label>
+        <label class="flex items-center gap-2 cursor-pointer select-none">
+          <span class="text-sm">Use 24 hour time format</span>
+          <input type="checkbox" v-model="cronstrueConfig.use24HourTimeFormat" class="sr-only" />
+          <span
+            class="relative inline-block h-5 w-9 shrink-0 rounded-full transition-colors duration-200"
+            :class="cronstrueConfig.use24HourTimeFormat ? 'bg-[var(--accent-cyan)]' : 'bg-[var(--border-default)]'"
+            @click="cronstrueConfig.use24HourTimeFormat = !cronstrueConfig.use24HourTimeFormat"
+          >
+            <span class="absolute left-0.5 top-0.5 inline-block h-4 w-4 rounded-full bg-white shadow transition-transform duration-200" :class="cronstrueConfig.use24HourTimeFormat ? 'translate-x-4' : 'translate-x-0'" />
+          </span>
+        </label>
+        <label class="flex items-center gap-2 cursor-pointer select-none">
+          <span class="text-sm">Days start at 0</span>
+          <input type="checkbox" v-model="cronstrueConfig.dayOfWeekStartIndexZero" class="sr-only" />
+          <span
+            class="relative inline-block h-5 w-9 shrink-0 rounded-full transition-colors duration-200"
+            :class="cronstrueConfig.dayOfWeekStartIndexZero ? 'bg-[var(--accent-cyan)]' : 'bg-[var(--border-default)]'"
+            @click="cronstrueConfig.dayOfWeekStartIndexZero = !cronstrueConfig.dayOfWeekStartIndexZero"
+          >
+            <span class="absolute left-0.5 top-0.5 inline-block h-4 w-4 rounded-full bg-white shadow transition-transform duration-200" :class="cronstrueConfig.dayOfWeekStartIndexZero ? 'translate-x-4' : 'translate-x-0'" />
+          </span>
+        </label>
+      </div>
     </div>
   </c-card>
   <c-card>
@@ -173,13 +197,6 @@ const cronValidationRules = [
 </template>
 
 <style lang="less" scoped>
-::v-deep(input) {
-  font-size: 30px;
-  font-family: monospace;
-  padding: 5px;
-  text-align: center;
-}
-
 .cron-string {
   text-align: center;
   font-size: 22px;

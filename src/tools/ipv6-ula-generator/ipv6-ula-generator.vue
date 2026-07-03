@@ -13,18 +13,9 @@ const calculatedSections = computed(() => {
   const ula = `fd${hex40bit.substring(0, 2)}:${hex40bit.substring(2, 6)}:${hex40bit.substring(6)}`;
 
   return [
-    {
-      label: 'IPv6 ULA:',
-      value: `${ula}::/48`,
-    },
-    {
-      label: 'First routable block:',
-      value: `${ula}:0::/64`,
-    },
-    {
-      label: 'Last routable block:',
-      value: `${ula}:ffff::/64`,
-    },
+    { label: 'IPv6 ULA:', value: `${ula}::/48` },
+    { label: 'First routable block:', value: `${ula}:0::/64` },
+    { label: 'Last routable block:', value: `${ula}:ffff::/64` },
   ];
 });
 
@@ -33,10 +24,10 @@ const addressValidation = macAddressValidation(macAddress);
 
 <template>
   <div>
-    <n-alert title="Info" type="info">
+    <c-alert title="Info" type="info">
       This tool uses the first method suggested by IETF using the current timestamp plus the mac address, sha1 hashed,
       and the lower 40 bits to generate your random ULA.
-    </n-alert>
+    </c-alert>
 
     <c-input-text
       v-model:value="macAddress"
@@ -44,7 +35,7 @@ const addressValidation = macAddressValidation(macAddress);
       clearable
       label="MAC address:"
       raw-text
-      my-8
+      class="my-8"
       :validation="addressValidation"
     />
 
@@ -58,7 +49,7 @@ const addressValidation = macAddressValidation(macAddress);
         label-align="right"
         label-position="left"
         readonly
-        mb-2
+        class="mb-2"
       />
     </div>
   </div>

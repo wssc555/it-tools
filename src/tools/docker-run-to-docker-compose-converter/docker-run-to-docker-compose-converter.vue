@@ -41,7 +41,7 @@ const { download } = useDownloadFileFromBase64({ source: dockerComposeBase64, fi
       rows="3"
     />
 
-    <n-divider />
+    <hr class="my-4 border-0 h-px bg-[var(--border-subtle)]" />
 
     <TextareaCopyable :value="dockerCompose" language="yaml" />
 
@@ -52,37 +52,37 @@ const { download } = useDownloadFileFromBase64({ source: dockerComposeBase64, fi
     </div>
 
     <div v-if="notComposable.length > 0">
-      <n-alert title="This options are not translatable to docker-compose" type="info" mt-5>
+      <c-alert type="info" title="This options are not translatable to docker-compose" class="mt-5">
         <ul>
           <li v-for="(message, index) of notComposable" :key="index">
             {{ message }}
           </li>
         </ul>
-      </n-alert>
+      </c-alert>
     </div>
 
     <div v-if="notImplemented.length > 0">
-      <n-alert
-        title="This options are not yet implemented and therefore haven't been translated to docker-compose"
+      <c-alert
         type="warning"
-        mt-5
+        title="This options are not yet implemented and therefore haven't been translated to docker-compose"
+        class="mt-5"
       >
         <ul>
           <li v-for="(message, index) of notImplemented" :key="index">
             {{ message }}
           </li>
         </ul>
-      </n-alert>
+      </c-alert>
     </div>
 
     <div v-if="errors.length > 0">
-      <n-alert title="The following errors occured" type="error" mt-5>
+      <c-alert type="error" title="The following errors occured" class="mt-5">
         <ul>
           <li v-for="(message, index) of errors" :key="index">
             {{ message }}
           </li>
         </ul>
-      </n-alert>
+      </c-alert>
     </div>
   </div>
 </template>

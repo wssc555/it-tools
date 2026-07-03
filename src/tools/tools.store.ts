@@ -9,6 +9,14 @@ export const useToolStore = defineStore('tools', () => {
   const favoriteToolsName = useStorage('favoriteToolsName', []) as Ref<string[]>;
   const { t } = useI18n();
 
+  const selectedCategoryName = ref<string | null>(null);
+
+  const selectedCategoryTools = computed<ToolWithCategory[]>(() => {
+    if (!selectedCategoryName.value) return [];
+    const category = toolsByCategory.value.find(c => c.name === selectedCategoryName.value);
+    return category ? (category.components as ToolWithCategory[]) : [];
+  });
+
   const tools = computed<ToolWithCategory[]>(() => toolsWithCategory.map((tool) => {
     const toolI18nKey = tool.path.replace(/\//g, '');
 
@@ -42,6 +50,8 @@ export const useToolStore = defineStore('tools', () => {
     tools,
     favoriteTools,
     toolsByCategory,
+    selectedCategoryName,
+    selectedCategoryTools,
     newTools: computed(() => tools.value.filter(({ isNew }) => isNew)),
 
     addToolToFavorites({ tool }: { tool: MaybeRef<Tool> }) {

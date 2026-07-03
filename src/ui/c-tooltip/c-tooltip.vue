@@ -10,27 +10,24 @@ const isTargetHovered = useElementHover(targetRef);
 </script>
 
 <template>
-  <div relative inline-block>
+  <div class="relative inline-block">
     <div ref="targetRef">
       <slot />
     </div>
 
     <div
       v-if="tooltip || $slots.tooltip"
-      class="absolute z-10 whitespace-nowrap rounded bg-black px-12px py-6px text-sm text-white shadow-lg transition transition transition-duration-0.2s"
+      class="pointer-events-none absolute z-10 whitespace-nowrap rounded-[var(--radius-sm)] bg-[var(--bg-surface-2)] px-3 py-1.5 text-sm text-[var(--text-primary)] shadow-[var(--shadow-md)] transition-all duration-200"
       :class="{
-        'op-0 scale-0': isTargetHovered === false,
-        'op-100 scale-100': isTargetHovered,
-        'bottom-100% left-50% -translate-x-1/2 mb-5px': position === 'top',
-        'top-100% left-50% -translate-x-1/2 mt-5px': position === 'bottom',
-        'right-100% top-50% -translate-y-1/2 mr-5px': position === 'left',
-        'left-100% top-50% -translate-y-1/2 ml-5px': position === 'right',
+        'scale-0 opacity-0': !isTargetHovered,
+        'scale-100 opacity-100': isTargetHovered,
+        'bottom-full left-1/2 -translate-x-1/2 mb-1': position === 'top',
+        'top-full left-1/2 -translate-x-1/2 mt-1': position === 'bottom',
+        'right-full top-1/2 -translate-y-1/2 mr-1': position === 'left',
+        'left-full top-1/2 -translate-y-1/2 ml-1': position === 'right',
       }"
     >
-      <slot
-        v-if="isTargetHovered"
-        name="tooltip"
-      >
+      <slot v-if="isTargetHovered" name="tooltip">
         {{ tooltip }}
       </slot>
     </div>

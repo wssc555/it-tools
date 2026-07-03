@@ -101,20 +101,21 @@ update('kelvin');
 
 <template>
   <div>
-    <n-input-group v-for="[key, { title, unit }] in Object.entries(units)" :key="key" mb-3 w-full>
-      <n-input-group-label style="width: 100px">
+    <div v-for="[key, { title, unit }] in Object.entries(units)" :key="key" class="mb-3 flex w-full items-center gap-2">
+      <div class="text-sm font-medium text-[var(--text-secondary)]" style="min-width: 100px;">
         {{ title }}
-      </n-input-group-label>
+      </div>
 
-      <n-input-number
-        v-model:value="units[key].ref"
-        style="flex: 1"
-        @update:value="() => update(key as TemperatureScale)"
+      <input
+        :value="units[key].ref"
+        type="number"
+        class="h-10 min-w-0 flex-1 rounded-[var(--radius-sm)] border border-[var(--border-subtle)] bg-[var(--surface-input)] px-3 text-[var(--text-primary)] outline-none transition-colors focus:border-[var(--accent-primary)] focus:shadow-[0_0_0_2px_var(--accent-primary-glow)]"
+        @input="units[key].ref = ($event.target as HTMLInputElement).valueAsNumber; update(key as TemperatureScale)"
       />
 
-      <n-input-group-label style="width: 50px">
+      <div class="text-sm text-[var(--text-muted)]" style="min-width: 50px;">
         {{ unit }}
-      </n-input-group-label>
-    </n-input-group>
+      </div>
+    </div>
   </div>
 </template>

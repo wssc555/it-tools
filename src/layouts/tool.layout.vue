@@ -32,68 +32,24 @@ const toolDescription = computed<string>(() => t(`tools.${i18nKey.value}.descrip
 
 <template>
   <BaseLayout>
-    <div class="tool-layout">
+    <div class="tool-layout mx-auto w-full" style="max-width: 1400px;">
       <!-- Tool Header -->
-      <div class="tool-header">
-        <div class="tool-header-top">
-          <n-h1 class="tool-title">
+      <div class="px-0 pb-6 pt-2">
+        <div class="flex items-center justify-between gap-3">
+          <h1 class="m-0 font-[var(--font-heading)] text-[28px] font-semibold leading-tight tracking-tight text-[var(--text-primary)]" style="opacity: 0.95; letter-spacing: -0.02em;">
             {{ toolTitle }}
-          </n-h1>
+          </h1>
           <FavoriteButton :tool="{ name: route.meta.name, path: route.path } as Tool" />
         </div>
-        <div class="tool-description">
+        <div class="mt-1.5 text-[15px] leading-relaxed text-[var(--text-secondary)]">
           {{ toolDescription }}
         </div>
       </div>
 
       <!-- Tool Content (workbench area) -->
-      <div class="tool-content">
+      <div class="flex w-full flex-col gap-5">
         <slot />
       </div>
     </div>
   </BaseLayout>
 </template>
-
-<style lang="less" scoped>
-.tool-layout {
-  max-width: 1400px;
-  margin: 0 auto;
-  width: 100%;
-}
-
-.tool-header {
-  padding: 8px 0 24px;
-
-  .tool-header-top {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: 12px;
-  }
-
-  .tool-title {
-    font-family: var(--font-heading);
-    font-size: 28px;
-    font-weight: 600;
-    margin: 0;
-    line-height: 1.2;
-    color: var(--text-primary);
-    opacity: 0.95;
-    letter-spacing: -0.02em;
-  }
-
-  .tool-description {
-    margin-top: 6px;
-    font-size: 15px;
-    line-height: 1.55;
-    color: var(--text-secondary);
-  }
-}
-
-.tool-content {
-  display: flex;
-  flex-direction: column;
-  gap: 20px;
-  width: 100%;
-}
-</style>

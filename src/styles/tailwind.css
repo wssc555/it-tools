@@ -1,0 +1,37 @@
+/* ============================================================
+ * Tailwind CSS 4.x Entry — @theme tokens + CSS variables
+ * UnoCSS will be removed in Phase 6; this is the replacement
+ * ============================================================ */
+@import "tailwindcss";
+
+/* ─── Tailwind 4 @theme: maps to design-tokens.css CSS variables ─── */
+@theme {
+  --font-sans: "IBM Plex Sans", "Inter", system-ui, sans-serif;
+  --font-mono: "JetBrains Mono", "Fira Code", monospace;
+
+  --color-bg-app: var(--bg-app);
+  --color-surface: var(--bg-surface-1);
+  --color-surface-muted: var(--bg-surface-2);
+  --color-surface-elevated: var(--bg-elevated);
+
+  --color-text-primary: var(--text-primary);
+  --color-text-secondary: var(--text-secondary);
+  --color-text-muted: var(--text-muted);
+
+  --color-accent: var(--accent-primary);
+  --color-accent-hover: var(--accent-primary-hover);
+  --color-accent-glow: var(--accent-primary-glow);
+
+  --color-danger: var(--state-danger);
+  --color-warning: var(--state-warning);
+  --color-success: var(--state-success);
+  --color-info: var(--state-info);
+
+  --radius-card: var(--radius-md);
+  --radius-button: var(--radius-sm);
+  --radius-input: var(--radius-sm);
+
+  --shadow-card: var(--shadow-sm);
+  --shadow-elevated: var(--shadow-md);
+  --shadow-modal: var(--shadow-lg);
+}

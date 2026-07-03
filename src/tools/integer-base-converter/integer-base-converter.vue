@@ -36,14 +36,22 @@ const error = computed(() =>
     <c-card>
       <c-input-text v-model:value="input" label="Input number" placeholder="Put your number here (ex: 42)" label-position="left" label-width="110px" mb-2 label-align="right" />
 
-      <n-form-item label="Input base" label-placement="left" label-width="110" :show-feedback="false">
-        <n-input-number v-model:value="inputBase" max="64" min="2" placeholder="Put your input base here (ex: 10)" w-full />
-      </n-form-item>
+      <label class="flex items-center gap-2 text-sm mb-2" style="padding-left: 110px">
+        <span class="shrink-0">Input base</span>
+        <input
+          v-model.number="inputBase"
+          type="number"
+          max="64"
+          min="2"
+          placeholder="Put your input base here (ex: 10)"
+          class="w-full rounded-[var(--radius-sm)] border border-[var(--border-default)] bg-[var(--bg-surface)] px-2 py-1 text-sm text-[var(--text-primary)] outline-none focus:border-[var(--accent-cyan)]"
+        />
+      </label>
 
-      <n-alert v-if="error" style="margin-top: 25px" type="error">
+      <c-alert v-if="error" type="error" class="mt-6">
         {{ error }}
-      </n-alert>
-      <n-divider />
+      </c-alert>
+      <hr class="my-3 border-0 h-px bg-[var(--border-subtle)]" />
 
       <InputCopyable
         label="Binary (2)"
@@ -81,10 +89,16 @@ const error = computed(() =>
       />
 
       <div flex items-baseline>
-        <n-input-group style="width: 160px; margin-right: 10px">
-          <n-input-group-label> Custom: </n-input-group-label>
-          <n-input-number v-model:value="outputBase" max="64" min="2" />
-        </n-input-group>
+        <div class="flex items-center gap-0 mr-10 shrink-0" style="width: 160px">
+          <span class="flex items-center px-2 py-1 text-sm bg-[var(--bg-surface)] border border-[var(--border-default)] border-r-0 rounded-l-[var(--radius-sm)] text-[var(--text-secondary)]">Custom:</span>
+          <input
+            v-model.number="outputBase"
+            type="number"
+            max="64"
+            min="2"
+            class="flex-1 rounded-none rounded-r-[var(--radius-sm)] border border-[var(--border-default)] bg-[var(--bg-surface)] px-2 py-1 text-sm text-[var(--text-primary)] outline-none focus:border-[var(--accent-cyan)] min-w-0"
+          />
+        </div>
 
         <InputCopyable
           flex-1
@@ -97,8 +111,4 @@ const error = computed(() =>
   </div>
 </template>
 
-<style lang="less" scoped>
-.n-input-group:not(:first-child) {
-  margin-top: 5px;
-}
-</style>
+

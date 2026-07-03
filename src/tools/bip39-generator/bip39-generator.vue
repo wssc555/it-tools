@@ -14,7 +14,7 @@ import {
   portugueseWordList,
   spanishWordList,
 } from '@it-tools/bip39';
-import { Copy, Refresh } from '@vicons/tabler';
+import { IconCopy, IconRefresh } from '@tabler/icons-vue';
 
 import { useCopy } from '@/composable/copy';
 import { useValidation } from '@/composable/validation';
@@ -82,50 +82,40 @@ const { copy: copyPassphrase } = useCopy({ source: passphrase, text: 'Passphrase
 
 <template>
   <div>
-    <n-grid cols="3" x-gap="12">
-      <n-gi span="1">
+    <div class="grid grid-cols-3 gap-3 mb-4">
+      <div class="col-span-1">
         <c-select
           v-model:value="language"
           searchable
           label="Language:"
           :options="Object.keys(languages)"
         />
-      </n-gi>
-      <n-gi span="2">
-        <n-form-item
-          label="Entropy (seed):"
-          :feedback="entropyValidation.message"
-          :validation-status="entropyValidation.status"
-        >
-          <n-input-group>
-            <c-input-text v-model:value="entropy" placeholder="Your string..." />
-
-            <c-button @click="refreshEntropy()">
-              <n-icon size="22">
-                <Refresh />
-              </n-icon>
-            </c-button>
-            <c-button @click="copyEntropy()">
-              <n-icon size="22">
-                <Copy />
-              </n-icon>
-            </c-button>
-          </n-input-group>
-        </n-form-item>
-      </n-gi>
-    </n-grid>
-    <n-form-item
-      label="Passphrase (mnemonic):"
-      :feedback="mnemonicValidation.message"
-      :validation-status="mnemonicValidation.status"
-    >
-      <n-input-group>
-        <c-input-text v-model:value="passphrase" placeholder="Your mnemonic..." raw-text />
-
-        <c-button @click="copyPassphrase()">
-          <n-icon size="22" :component="Copy" />
-        </c-button>
-      </n-input-group>
-    </n-form-item>
+      </div>
+      <div class="col-span-2">
+        <div class="mb-1">
+          <label class="text-sm font-medium text-[var(--text-secondary)]">Entropy (seed):</label>
+          <span v-if="entropyValidation.message" class="text-xs ml-2" :class="entropyValidation.status === 'error' ? 'text-[var(--state-danger)]' : 'text-[var(--text-muted)]'">{{ entropyValidation.message }}</span>
+        </div>
+        <div class="flex items-center gap-1">
+          <c-input-text v-model:value="entropy" placeholder="Your string..." class="flex-1" />
+          <c-button @click="refreshEntropy()">
+            <IconRefresh size="22" />
+          </c-button>
+          <c-button @click="copyEntropy()">
+            <IconCopy size="22" />
+          </c-button>
+        </div>
+      </div>
+    </div>
+    <div class="mb-1">
+      <label class="text-sm font-medium text-[var(--text-secondary)]">Passphrase (mnemonic):</label>
+      <span v-if="mnemonicValidation.message" class="text-xs ml-2" :class="mnemonicValidation.status === 'error' ? 'text-[var(--state-danger)]' : 'text-[var(--text-muted)]'">{{ mnemonicValidation.message }}</span>
+    </div>
+    <div class="flex items-center gap-1">
+      <c-input-text v-model:value="passphrase" placeholder="Your mnemonic..." raw-text class="flex-1" />
+      <c-button @click="copyPassphrase()">
+        <IconCopy size="22" />
+      </c-button>
+    </div>
   </div>
 </template>

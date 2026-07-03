@@ -30,38 +30,30 @@ const validation = useValidation({
 
 <template>
   <c-card>
-    <c-input-text v-model:value="rawJwt" label="JWT to decode" :validation="validation" placeholder="Put your token here..." rows="5" multiline raw-text autofocus mb-3 />
+    <c-input-text v-model:value="rawJwt" label="JWT to decode" :validation="validation" placeholder="Put your token here..." rows="5" multiline raw-text autofocus class="mb-3" />
 
-    <n-table v-if="validation.isValid">
-      <tbody>
-        <template v-for="section of sections" :key="section.key">
-          <th colspan="2" class="table-header">
-            {{ section.title }}
-          </th>
-          <tr v-for="{ claim, claimDescription, friendlyValue, value } in decodedJWT[section.key]" :key="claim + value">
-            <td class="claims" style="vertical-align: top;">
-              <span font-bold>
-                {{ claim }}
-              </span>
-              <span v-if="claimDescription" ml-2 op-70>
-                ({{ claimDescription }})
-              </span>
-            </td>
-            <td style="word-wrap: break-word;word-break: break-all;">
-              <span>{{ value }}</span>
-              <span v-if="friendlyValue" ml-2 op-70>
-                ({{ friendlyValue }})
-              </span>
-            </td>
-          </tr>
-        </template>
-      </tbody>
-    </n-table>
+    <div v-if="validation.isValid" class="overflow-x-auto rounded-[var(--radius-sm)] border border-[var(--border-subtle)]">
+      <table class="w-full border-collapse text-left text-sm">
+        <tbody>
+          <template v-for="section of sections" :key="section.key">
+            <tr class="border-b border-[var(--border-subtle)] bg-[var(--bg-surface-2)]">
+              <th colspan="2" class="px-4 py-2 text-center text-xs font-semibold uppercase tracking-wider text-[var(--text-secondary)]">
+                {{ section.title }}
+              </th>
+            </tr>
+            <tr v-for="{ claim, claimDescription, friendlyValue, value } in decodedJWT[section.key]" :key="claim + value" class="border-b border-[var(--border-subtle)] last:border-b-0">
+              <td class="px-4 py-2 align-top">
+                <span class="font-semibold text-[var(--text-primary)]">{{ claim }}</span>
+                <span v-if="claimDescription" class="ml-2 opacity-70 text-[var(--text-muted)]">({{ claimDescription }})</span>
+              </td>
+              <td class="px-4 py-2 text-[var(--text-primary)]" style="word-wrap: break-word;word-break: break-all;">
+                <span>{{ value }}</span>
+                <span v-if="friendlyValue" class="ml-2 opacity-70 text-[var(--text-muted)]">({{ friendlyValue }})</span>
+              </td>
+            </tr>
+          </template>
+        </tbody>
+      </table>
+    </div>
   </c-card>
 </template>
-
-<style lang="less" scoped>
-.table-header {
-  text-align: center;
-}
-</style>

@@ -11,20 +11,20 @@ const { userAgentInfo, sections } = toRefs(props);
 
 <template>
   <div>
-    <n-grid :x-gap="12" :y-gap="8" cols="1 s:2" responsive="screen">
-      <n-gi v-for="{ heading, icon, content } in sections" :key="heading">
+    <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+      <div v-for="{ heading, icon, content } in sections" :key="heading">
         <c-card h-full>
           <div flex items-center gap-3>
-            <n-icon size="30" :component="icon" :depth="3" />
+            <component :is="icon" :size="30" class="text-[var(--text-secondary)]" />
             <span text-lg>{{ heading }}</span>
           </div>
 
-          <div mt-5 flex gap-2>
+          <div mt-5 flex gap-2 flex-wrap>
             <span v-for="{ label, getValue } in content" :key="label">
               <c-tooltip v-if="getValue(userAgentInfo)" :tooltip="label">
-                <n-tag type="success" size="large" round :bordered="false">
+                <span class="inline-block rounded-full bg-[var(--state-success)]/15 px-3 py-1 text-sm font-medium leading-5 text-[var(--state-success)]">
                   {{ getValue(userAgentInfo) }}
-                </n-tag>
+                </span>
               </c-tooltip>
             </span>
           </div>
@@ -34,7 +34,7 @@ const { userAgentInfo, sections } = toRefs(props);
             </span>
           </div>
         </c-card>
-      </n-gi>
-    </n-grid>
+      </div>
+    </div>
   </div>
 </template>

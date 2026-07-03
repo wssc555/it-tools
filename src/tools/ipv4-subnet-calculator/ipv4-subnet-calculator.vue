@@ -1,7 +1,7 @@
 <script setup lang="ts">
+import { IconArrowLeft, IconArrowRight } from '@tabler/icons-vue';
 import { Netmask } from 'netmask';
 import { useStorage } from '@vueuse/core';
-import { ArrowLeft, ArrowRight } from '@vicons/tabler';
 import { getIPClass } from './ipv4-subnet-calculator.models';
 import { withDefaultOnError } from '@/utils/defaults';
 import { isNotThrowing } from '@/utils/boolean';
@@ -20,103 +20,53 @@ const ipValidationRules = [
   },
 ];
 
-const sections: {
-  label: string
-  getValue: (blocks: Netmask) => string | undefined
-  undefinedFallback?: string
-}[] = [
-  {
-    label: 'Netmask',
-    getValue: block => block.toString(),
-  },
-  {
-    label: 'Network address',
-    getValue: ({ base }) => base,
-  },
-  {
-    label: 'Network mask',
-    getValue: ({ mask }) => mask,
-  },
-  {
-    label: 'Network mask in binary',
-    getValue: ({ bitmask }) => ('1'.repeat(bitmask) + '0'.repeat(32 - bitmask)).match(/.{8}/g)?.join('.') ?? '',
-  },
-  {
-    label: 'CIDR notation',
-    getValue: ({ bitmask }) => `/${bitmask}`,
-  },
-  {
-    label: 'Wildcard mask',
-    getValue: ({ hostmask }) => hostmask,
-  },
-  {
-    label: 'Network size',
-    getValue: ({ size }) => String(size),
-  },
-  {
-    label: 'First address',
-    getValue: ({ first }) => first,
-  },
-  {
-    label: 'Last address',
-    getValue: ({ last }) => last,
-  },
-  {
-    label: 'Broadcast address',
-    getValue: ({ broadcast }) => broadcast,
-    undefinedFallback: 'No broadcast address with this mask',
-  },
-  {
-    label: 'IP class',
-    getValue: ({ base: ip }) => getIPClass({ ip }),
-    undefinedFallback: 'Unknown class type',
-  },
+const sections: { label: string; getValue: (blocks: Netmask) => string | undefined; undefinedFallback?: string }[] = [
+  { label: 'Netmask', getValue: block => block.toString() },
+  { label: 'Network address', getValue: ({ base }) => base },
+  { label: 'Network mask', getValue: ({ mask }) => mask },
+  { label: 'Network mask in binary', getValue: ({ bitmask }) => ('1'.repeat(bitmask) + '0'.repeat(32 - bitmask)).match(/.{8}/g)?.join('.') ?? '' },
+  { label: 'CIDR notation', getValue: ({ bitmask }) => `/${bitmask}` },
+  { label: 'Wildcard mask', getValue: ({ hostmask }) => hostmask },
+  { label: 'Network size', getValue: ({ size }) => String(size) },
+  { label: 'First address', getValue: ({ first }) => first },
+  { label: 'Last address', getValue: ({ last }) => last },
+  { label: 'Broadcast address', getValue: ({ broadcast }) => broadcast, undefinedFallback: 'No broadcast address with this mask' },
+  { label: 'IP class', getValue: ({ base: ip }) => getIPClass({ ip }), undefinedFallback: 'Unknown class type' },
 ];
 
 function switchToBlock({ count = 1 }: { count?: number }) {
   const next = networkInfo.value?.next(count);
-
-  if (next) {
-    ip.value = next.toString();
-  }
+  if (next) ip.value = next.toString();
 }
 </script>
 
 <template>
   <div>
-    <c-input-text
-      v-model:value="ip"
-      label="An IPv4 address with or without mask"
-      placeholder="The ipv4 address..."
-      :validation-rules="ipValidationRules"
-      mb-4
-    />
+    <c-input-text v-model:value="ip" label="An IPv4 address with or without mask" placeholder="The ipv4 address..." :validation-rules="ipValidationRules" class="mb-4" />
 
     <div v-if="networkInfo">
-      <n-table>
-        <tbody>
-          <tr v-for="{ getValue, label, undefinedFallback } in sections" :key="label">
-            <td font-bold>
-              {{ label }}
-            </td>
-            <td>
-              <SpanCopyable v-if="getValue(networkInfo)" :value="getValue(networkInfo)" />
-              <span v-else op-70>
-                {{ undefinedFallback }}
-              </span>
-            </td>
-          </tr>
-        </tbody>
-      </n-table>
+      <div class="overflow-x-auto rounded-[var(--radius-sm)] border border-[var(--border-subtle)]">
+        <table class="w-full border-collapse text-sm">
+          <tbody>
+            <tr v-for="{ getValue, label, undefinedFallback } in sections" :key="label" class="border-b border-[var(--border-subtle)] last:border-b-0">
+              <td class="px-4 py-2 font-semibold text-[var(--text-primary)]" style="white-space: nowrap;">{{ label }}</td>
+              <td class="px-4 py-2 text-[var(--text-secondary)]">
+                <SpanCopyable v-if="getValue(networkInfo)" :value="getValue(networkInfo)" />
+                <span v-else class="opacity-70 text-[var(--text-muted)]">{{ undefinedFallback }}</span>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
 
-      <div mt-3 flex items-center justify-between>
+      <div class="mt-3 flex items-center justify-between">
         <c-button @click="switchToBlock({ count: -1 })">
-          <n-icon :component="ArrowLeft" />
+          <IconArrowLeft size="20" />
           Previous block
         </c-button>
         <c-button @click="switchToBlock({ count: 1 })">
           Next block
-          <n-icon :component="ArrowRight" />
+          <IconArrowRight size="20" />
         </c-button>
       </div>
     </div>

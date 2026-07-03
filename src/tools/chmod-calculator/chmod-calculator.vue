@@ -1,12 +1,8 @@
 <script setup lang="ts">
-import { useThemeVars } from 'naive-ui';
-
 import InputCopyable from '../../components/InputCopyable.vue';
 import { computeChmodOctalRepresentation, computeChmodSymbolicRepresentation } from './chmod-calculator.service';
 
 import type { Group, Scope } from './chmod-calculator.types';
-
-const themeVars = useThemeVars();
 
 const scopes: { scope: Scope; title: string }[] = [
   { scope: 'read', title: 'Read (4)' },
@@ -27,69 +23,47 @@ const symbolic = computed(() => computeChmodSymbolicRepresentation({ permissions
 
 <template>
   <div>
-    <n-table :bordered="false" :bottom-bordered="false" single-column class="permission-table">
-      <thead>
-        <tr>
-          <th class="text-center" scope="col" />
-          <th class="text-center" scope="col">
-            Owner (u)
-          </th>
-          <th class="text-center" scope="col">
-            Group (g)
-          </th>
-          <th class="text-center" scope="col">
-            Public (o)
-          </th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr v-for="{ scope, title } of scopes" :key="scope">
-          <td class="line-header">
-            {{ title }}
-          </td>
-          <td v-for="group of groups" :key="group" class="text-center">
-            <!-- <n-switch v-model:value="permissions[group][scope]" /> -->
-            <n-checkbox v-model:checked="permissions[group][scope]" size="large" />
-          </td>
-        </tr>
-      </tbody>
-    </n-table>
+    <div class="overflow-x-auto rounded-[var(--radius-sm)] border border-[var(--border-subtle)]">
+      <table class="w-full border-collapse text-left text-sm">
+        <thead>
+          <tr class="border-b border-[var(--border-subtle)] bg-[var(--bg-surface-2)]">
+            <th class="px-4 py-3 text-center text-xs font-semibold uppercase tracking-wider text-[var(--text-secondary)]" scope="col" />
+            <th class="px-4 py-3 text-center text-xs font-semibold uppercase tracking-wider text-[var(--text-secondary)]" scope="col">
+              Owner (u)
+            </th>
+            <th class="px-4 py-3 text-center text-xs font-semibold uppercase tracking-wider text-[var(--text-secondary)]" scope="col">
+              Group (g)
+            </th>
+            <th class="px-4 py-3 text-center text-xs font-semibold uppercase tracking-wider text-[var(--text-secondary)]" scope="col">
+              Public (o)
+            </th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr v-for="{ scope, title } of scopes" :key="scope" class="border-b border-[var(--border-subtle)] last:border-b-0">
+            <td class="px-4 py-3 text-right text-sm font-semibold text-[var(--text-primary)]" style="max-width: 80px;">
+              {{ title }}
+            </td>
+            <td v-for="group of groups" :key="group" class="px-4 py-3 text-center">
+              <input
+                type="checkbox"
+                :checked="permissions[group][scope]"
+                class="h-5 w-5 cursor-pointer accent-[var(--accent-primary)]"
+                @change="permissions[group][scope] = !permissions[group][scope]"
+              />
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
 
-    <div class="octal-result">
+    <div class="my-5 text-center font-mono text-5xl text-[var(--accent-primary)]">
       {{ octal }}
     </div>
-    <div class="octal-result">
+    <div class="my-5 text-center font-mono text-5xl text-[var(--accent-primary)]">
       {{ symbolic }}
     </div>
 
     <InputCopyable :value="`chmod ${octal} path`" readonly />
   </div>
 </template>
-
-<style lang="less" scoped>
-.octal-result {
-  text-align: center;
-  font-size: 50px;
-  font-family: monospace;
-  color: v-bind('themeVars.primaryColor');
-  margin: 20px 0;
-}
-.permission-table {
-  td,
-  th {
-    padding: 15px;
-
-    @media screen and (max-width: 600px) {
-      padding: 5px;
-    }
-  }
-}
-.line-header {
-  font-weight: bold;
-  text-align: right;
-  max-width: 80px;
-}
-.text-center {
-  text-align: center;
-}
-</style>

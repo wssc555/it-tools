@@ -27,33 +27,56 @@ const { copy } = useCopy({ source: token, text: t('tools.token-generator.copied'
 <template>
   <div>
     <c-card>
-      <n-form label-placement="left" label-width="140">
-        <div flex justify-center>
+      <div flex justify-center>
           <div>
-            <n-form-item :label="t('tools.token-generator.uppercase')">
-              <n-switch v-model:value="withUppercase" />
-            </n-form-item>
-
-            <n-form-item :label="t('tools.token-generator.lowercase')">
-              <n-switch v-model:value="withLowercase" />
-            </n-form-item>
+            <div class="flex items-center justify-between gap-3 mb-2" style="min-width: 200px">
+              <span class="text-sm text-[var(--text-secondary)]">{{ t('tools.token-generator.uppercase') }}</span>
+              <label class="inline-flex items-center cursor-pointer">
+                <input type="checkbox" v-model="withUppercase" class="sr-only" />
+                <span class="relative inline-block h-5 w-9 shrink-0 rounded-full transition-colors duration-200" :class="withUppercase ? 'bg-[var(--accent-cyan)]' : 'bg-[var(--border-default)]'" @click="withUppercase = !withUppercase">
+                  <span class="absolute left-0.5 top-0.5 inline-block h-4 w-4 rounded-full bg-white shadow transition-transform duration-200" :class="withUppercase ? 'translate-x-4' : 'translate-x-0'" />
+                </span>
+              </label>
+            </div>
+            <div class="flex items-center justify-between gap-3 mb-2" style="min-width: 200px">
+              <span class="text-sm text-[var(--text-secondary)]">{{ t('tools.token-generator.lowercase') }}</span>
+              <label class="inline-flex items-center cursor-pointer">
+                <input type="checkbox" v-model="withLowercase" class="sr-only" />
+                <span class="relative inline-block h-5 w-9 shrink-0 rounded-full transition-colors duration-200" :class="withLowercase ? 'bg-[var(--accent-cyan)]' : 'bg-[var(--border-default)]'" @click="withLowercase = !withLowercase">
+                  <span class="absolute left-0.5 top-0.5 inline-block h-4 w-4 rounded-full bg-white shadow transition-transform duration-200" :class="withLowercase ? 'translate-x-4' : 'translate-x-0'" />
+                </span>
+              </label>
+            </div>
           </div>
-
           <div>
-            <n-form-item :label="t('tools.token-generator.numbers')">
-              <n-switch v-model:value="withNumbers" />
-            </n-form-item>
-
-            <n-form-item :label="t('tools.token-generator.symbols')">
-              <n-switch v-model:value="withSymbols" />
-            </n-form-item>
+            <div class="flex items-center justify-between gap-3 mb-2" style="min-width: 200px">
+              <span class="text-sm text-[var(--text-secondary)]">{{ t('tools.token-generator.numbers') }}</span>
+              <label class="inline-flex items-center cursor-pointer">
+                <input type="checkbox" v-model="withNumbers" class="sr-only" />
+                <span class="relative inline-block h-5 w-9 shrink-0 rounded-full transition-colors duration-200" :class="withNumbers ? 'bg-[var(--accent-cyan)]' : 'bg-[var(--border-default)]'" @click="withNumbers = !withNumbers">
+                  <span class="absolute left-0.5 top-0.5 inline-block h-4 w-4 rounded-full bg-white shadow transition-transform duration-200" :class="withNumbers ? 'translate-x-4' : 'translate-x-0'" />
+                </span>
+              </label>
+            </div>
+            <div class="flex items-center justify-between gap-3 mb-2" style="min-width: 200px">
+              <span class="text-sm text-[var(--text-secondary)]">{{ t('tools.token-generator.symbols') }}</span>
+              <label class="inline-flex items-center cursor-pointer">
+                <input type="checkbox" v-model="withSymbols" class="sr-only" />
+                <span class="relative inline-block h-5 w-9 shrink-0 rounded-full transition-colors duration-200" :class="withSymbols ? 'bg-[var(--accent-cyan)]' : 'bg-[var(--border-default)]'" @click="withSymbols = !withSymbols">
+                  <span class="absolute left-0.5 top-0.5 inline-block h-4 w-4 rounded-full bg-white shadow transition-transform duration-200" :class="withSymbols ? 'translate-x-4' : 'translate-x-0'" />
+                </span>
+              </label>
+            </div>
           </div>
         </div>
-      </n-form>
 
-      <n-form-item :label="`${t('tools.token-generator.length')} (${length})`" label-placement="left">
-        <n-slider v-model:value="length" :step="1" :min="1" :max="512" />
-      </n-form-item>
+      <div class="flex items-center justify-between gap-3 mb-4">
+        <span class="text-sm text-[var(--text-secondary)]">{{ t('tools.token-generator.length') }} ({{ length }})</span>
+        <div class="flex items-center gap-3 flex-1 max-w-[400px]">
+          <input type="range" v-model.number="length" :step="1" :min="1" :max="512" class="flex-1 accent-[var(--accent-cyan)]" />
+          <span class="text-sm font-mono w-10 text-right">{{ length }}</span>
+        </div>
+      </div>
 
       <c-input-text
         v-model:value="token"

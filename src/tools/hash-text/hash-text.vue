@@ -6,16 +6,7 @@ import InputCopyable from '../../components/InputCopyable.vue';
 import { convertHexToBin } from './hash-text.service';
 import { useQueryParam } from '@/composable/queryParams';
 
-const algos = {
-  MD5,
-  SHA1,
-  SHA256,
-  SHA224,
-  SHA512,
-  SHA384,
-  SHA3,
-  RIPEMD160,
-} as const;
+const algos = { MD5, SHA1, SHA256, SHA224, SHA512, SHA384, SHA3, RIPEMD160 } as const;
 
 type AlgoNames = keyof typeof algos;
 type Encoding = keyof typeof enc | 'Bin';
@@ -27,7 +18,6 @@ function formatWithEncoding(words: lib.WordArray, encoding: Encoding) {
   if (encoding === 'Bin') {
     return convertHexToBin(words.toString(enc.Hex));
   }
-
   return words.toString(enc[encoding]);
 }
 
@@ -39,39 +29,25 @@ const hashText = (algo: AlgoNames, value: string) => formatWithEncoding(algos[al
     <c-card>
       <c-input-text v-model:value="clearText" multiline raw-text placeholder="Your string to hash..." rows="3" autosize autofocus label="Your text to hash:" />
 
-      <n-divider />
+      <hr class="my-4 border-t border-[var(--border-subtle)]" />
 
       <c-select
         v-model:value="encoding"
-        mb-4
+        class="mb-4"
         label="Digest encoding"
         :options="[
-          {
-            label: 'Binary (base 2)',
-            value: 'Bin',
-          },
-          {
-            label: 'Hexadecimal (base 16)',
-            value: 'Hex',
-          },
-          {
-            label: 'Base64 (base 64)',
-            value: 'Base64',
-          },
-          {
-            label: 'Base64url (base 64 with url safe chars)',
-            value: 'Base64url',
-          },
+          { label: 'Binary (base 2)', value: 'Bin' },
+          { label: 'Hexadecimal (base 16)', value: 'Hex' },
+          { label: 'Base64 (base 64)', value: 'Base64' },
+          { label: 'Base64url (base 64 with url safe chars)', value: 'Base64url' },
         ]"
       />
 
-      <div v-for="algo in algoNames" :key="algo" style="margin: 5px 0">
-        <n-input-group>
-          <n-input-group-label style="flex: 0 0 120px">
-            {{ algo }}
-          </n-input-group-label>
-          <InputCopyable :value="hashText(algo, clearText)" readonly />
-        </n-input-group>
+      <div v-for="algo in algoNames" :key="algo" class="my-1 flex items-center gap-2">
+        <div class="shrink-0 text-sm font-medium text-[var(--text-secondary)]" style="flex: 0 0 120px;">
+          {{ algo }}
+        </div>
+        <InputCopyable :value="hashText(algo, clearText)" readonly class="min-w-0 flex-1" />
       </div>
     </c-card>
   </div>

@@ -7,51 +7,21 @@ const sections = [
   {
     name: 'Screen',
     information: [
-      {
-        label: 'Screen size',
-        value: computed(() => `${window.screen.availWidth} x ${window.screen.availHeight}`),
-      },
-      {
-        label: 'Orientation',
-        value: computed(() => window.screen.orientation.type),
-      },
-      {
-        label: 'Orientation angle',
-        value: computed(() => `${window.screen.orientation.angle}°`),
-      },
-      {
-        label: 'Color depth',
-        value: computed(() => `${window.screen.colorDepth} bits`),
-      },
-      {
-        label: 'Pixel ratio',
-        value: computed(() => `${window.devicePixelRatio} dppx`),
-      },
-      {
-        label: 'Window size',
-        value: computed(() => `${width.value} x ${height.value}`),
-      },
+      { label: 'Screen size', value: computed(() => `${window.screen.availWidth} x ${window.screen.availHeight}`) },
+      { label: 'Orientation', value: computed(() => window.screen.orientation.type) },
+      { label: 'Orientation angle', value: computed(() => `${window.screen.orientation.angle}°`) },
+      { label: 'Color depth', value: computed(() => `${window.screen.colorDepth} bits`) },
+      { label: 'Pixel ratio', value: computed(() => `${window.devicePixelRatio} dppx`) },
+      { label: 'Window size', value: computed(() => `${width.value} x ${height.value}`) },
     ],
   },
   {
     name: 'Device',
     information: [
-      {
-        label: 'Browser vendor',
-        value: computed(() => navigator.vendor),
-      },
-      {
-        label: 'Languages',
-        value: computed(() => navigator.languages.join(', ')),
-      },
-      {
-        label: 'Platform',
-        value: computed(() => navigator.platform),
-      },
-      {
-        label: 'User agent',
-        value: computed(() => navigator.userAgent),
-      },
+      { label: 'Browser vendor', value: computed(() => navigator.vendor) },
+      { label: 'Languages', value: computed(() => navigator.languages.join(', ')) },
+      { label: 'Platform', value: computed(() => navigator.platform) },
+      { label: 'User agent', value: computed(() => navigator.userAgent) },
     ],
   },
 ];
@@ -59,44 +29,15 @@ const sections = [
 
 <template>
   <c-card v-for="{ name, information } in sections" :key="name" :title="name">
-    <n-grid cols="1 400:2" x-gap="12" y-gap="12">
-      <n-gi v-for="{ label, value: { value } } in information" :key="label" class="information">
-        <div class="label">
+    <div class="grid gap-3 sm:grid-cols-2">
+      <div v-for="{ label, value: { value } } in information" :key="label" class="information rounded-md bg-[color-mix(in_srgb,var(--text-primary),transparent_93%)] p-3.5">
+        <div class="mb-1 text-sm leading-none opacity-80 text-[var(--text-secondary)]">
           {{ label }}
         </div>
-
-        <div class="value">
-          <n-ellipsis v-if="value">
-            {{ value }}
-          </n-ellipsis>
-          <div v-else class="undefined-value">
-            unknown
-          </div>
+        <div class="truncate text-xl font-normal text-[var(--text-primary)]" :title="value">
+          {{ value }}
         </div>
-      </n-gi>
-    </n-grid>
+      </div>
+    </div>
   </c-card>
 </template>
-
-<style lang="less" scoped>
-.information {
-  padding: 14px 16px;
-  border-radius: 4px;
-  background-color: #aaaaaa11;
-
-  .label {
-    font-size: 14px;
-    opacity: 0.8;
-    line-height: 1;
-    margin-bottom: 5px;
-  }
-  .value {
-    font-size: 20px;
-    font-weight: 400;
-  }
-
-  .undefined-value {
-    opacity: 0.8;
-  }
-}
-</style>

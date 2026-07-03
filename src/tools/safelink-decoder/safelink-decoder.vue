@@ -23,10 +23,11 @@ const outputDecodedUrl = computed(() => {
       label="Your input Outlook SafeLink Url:"
     />
 
-    <n-divider />
+    <hr class="my-4 border-t border-[var(--border-subtle)]" />
 
-    <n-form-item label="Output decoded URL:">
+    <div class="mb-4">
+      <label class="mb-1 block text-sm text-[var(--text-secondary)]">Output decoded URL:</label>
       <TextareaCopyable :value="outputDecodedUrl" :word-wrap="true" />
-    </n-form-item>
+    </div>
   </div>
 </template>

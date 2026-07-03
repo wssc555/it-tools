@@ -78,9 +78,10 @@ const { download } = useDownloadFileFromBase64({ source: qrcode, filename: 'qr-c
             placeholder="Your WiFi SSID..."
             mb-6
           />
-          <n-checkbox v-model:checked="isHiddenSSID">
-            Hidden SSID
-          </n-checkbox>
+          <label class="flex items-center gap-1.5 cursor-pointer select-none whitespace-nowrap">
+            <input type="checkbox" v-model="isHiddenSSID" class="h-4 w-4 rounded border-[var(--border-default)] text-[var(--accent-cyan)] focus:ring-[var(--accent-cyan)]" />
+            <span class="text-sm">Hidden SSID</span>
+          </label>
         </div>
         <c-input-text
           v-if="encryption !== 'nopass'"
@@ -117,9 +118,10 @@ const { download } = useDownloadFileFromBase64({ source: qrcode, filename: 'qr-c
             placeholder="Your EAP Identity..."
             mb-6
           />
-          <n-checkbox v-model:checked="eapAnonymous">
-            Anonymous?
-          </n-checkbox>
+          <label class="flex items-center gap-1.5 cursor-pointer select-none whitespace-nowrap">
+            <input type="checkbox" v-model="eapAnonymous" class="h-4 w-4 rounded border-[var(--border-default)] text-[var(--accent-cyan)] focus:ring-[var(--accent-cyan)]" />
+            <span class="text-sm">Anonymous?</span>
+          </label>
         </div>
         <c-select
           v-if="encryption === 'WPA2-EAP'"
@@ -131,14 +133,16 @@ const { download } = useDownloadFileFromBase64({ source: qrcode, filename: 'qr-c
           :options="EAPPhase2Methods.map((method) => ({ label: method, value: method }))"
           searchable mb-4
         />
-        <n-form label-width="130" label-placement="left">
-          <n-form-item label="Foreground color:">
-            <n-color-picker v-model:value="foreground" :modes="['hex']" />
-          </n-form-item>
-          <n-form-item label="Background color:">
-            <n-color-picker v-model:value="background" :modes="['hex']" />
-          </n-form-item>
-        </n-form>
+        <div class="flex items-center gap-4 mt-4" style="padding-left: 130px">
+          <label class="flex items-center gap-2 text-sm cursor-pointer">
+            <span>Foreground color:</span>
+            <input type="color" v-model="foreground" class="h-8 w-8 cursor-pointer rounded border border-[var(--border-default)] bg-transparent p-0.5" />
+          </label>
+          <label class="flex items-center gap-2 text-sm cursor-pointer">
+            <span>Background color:</span>
+            <input type="color" v-model="background" class="h-8 w-8 cursor-pointer rounded border border-[var(--border-default)] bg-transparent p-0.5" />
+          </label>
+        </div>
       </div>
       <div v-if="qrcode">
         <div flex flex-col items-center gap-3>

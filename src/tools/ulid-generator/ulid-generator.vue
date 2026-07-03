@@ -22,25 +22,27 @@ const { copy } = useCopy({ source: ulids, text: 'ULIDs copied to the clipboard' 
 </script>
 
 <template>
-  <div flex flex-col justify-center gap-2>
-    <div flex items-center>
-      <label w-75px> Quantity:</label>
-      <n-input-number v-model:value="amount" min="1" max="100" flex-1 />
+  <div class="flex flex-col justify-center gap-2">
+    <div class="flex items-center gap-2">
+      <label class="w-[75px] text-sm text-[var(--text-secondary)]">Quantity:</label>
+      <input
+        v-model.number="amount"
+        type="number"
+        min="1"
+        max="100"
+        class="h-10 min-w-0 flex-1 rounded-[var(--radius-sm)] border border-[var(--border-subtle)] bg-[var(--surface-input)] px-3 text-[var(--text-primary)] outline-none transition-colors focus:border-[var(--accent-primary)] focus:shadow-[0_0_0_2px_var(--accent-primary-glow)]"
+      />
     </div>
 
     <c-buttons-select v-model:value="format" :options="formats" label="Format: " label-width="75px" />
 
-    <c-card mt-5 flex data-test-id="ulids">
-      <pre m-0 m-x-auto>{{ ulids }}</pre>
+    <c-card class="mt-5 flex" data-test-id="ulids">
+      <pre class="m-0 mx-auto">{{ ulids }}</pre>
     </c-card>
 
-    <div flex justify-center gap-2>
-      <c-button data-test-id="refresh" @click="refreshUlids()">
-        Refresh
-      </c-button>
-      <c-button @click="copy()">
-        Copy
-      </c-button>
+    <div class="flex justify-center gap-2">
+      <c-button data-test-id="refresh" @click="refreshUlids()">Refresh</c-button>
+      <c-button @click="copy()">Copy</c-button>
     </div>
   </div>
 </template>

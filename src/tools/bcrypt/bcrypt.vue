@@ -1,9 +1,6 @@
 <script setup lang="ts">
 import { compareSync, hashSync } from 'bcryptjs';
-import { useThemeVars } from 'naive-ui';
 import { useCopy } from '@/composable/copy';
-
-const themeVars = useThemeVars();
 
 const input = ref('');
 const saltCount = ref(10);
@@ -17,23 +14,30 @@ const compareMatch = computed(() => compareSync(compareString.value, compareHash
 
 <template>
   <c-card title="Hash">
-    <c-input-text
-      v-model:value="input"
-      placeholder="Your string to bcrypt..."
-      raw-text
-      label="Your string: "
-      label-position="left"
-      label-align="right"
-      label-width="120px"
-      mb-2
-    />
-    <n-form-item label="Salt count: " label-placement="left" label-width="120">
-      <n-input-number v-model:value="saltCount" placeholder="Salt rounds..." :max="100" :min="0" w-full />
-    </n-form-item>
+    <div class="mb-4 flex flex-col gap-1">
+      <label class="text-sm text-[var(--text-secondary)]" style="min-width: 120px;">Your string:</label>
+      <c-input-text
+        v-model:value="input"
+        placeholder="Your string to bcrypt..."
+        raw-text
+      />
+    </div>
+    <div class="mb-4 flex flex-col gap-1">
+      <label class="text-sm text-[var(--text-secondary)]" style="min-width: 120px;">Salt count:</label>
+      <div class="flex items-center gap-2">
+        <input
+          v-model.number="saltCount"
+          type="number"
+          min="0"
+          max="100"
+          class="h-10 w-full rounded-[var(--radius-sm)] border border-[var(--border-subtle)] bg-[var(--surface-input)] px-3 text-[var(--text-primary)] outline-none transition-colors focus:border-[var(--accent-primary)] focus:shadow-[0_0_0_2px_var(--accent-primary-glow)]"
+        />
+      </div>
+    </div>
 
-    <c-input-text :value="hashed" readonly text-center />
+    <c-input-text :value="hashed" readonly class="text-center" />
 
-    <div mt-5 flex justify-center>
+    <div class="mt-5 flex justify-center">
       <c-button @click="copy()">
         Copy hash
       </c-button>
@@ -41,28 +45,36 @@ const compareMatch = computed(() => compareSync(compareString.value, compareHash
   </c-card>
 
   <c-card title="Compare string with hash">
-    <n-form label-width="120">
-      <n-form-item label="Your string: " label-placement="left">
-        <c-input-text v-model:value="compareString" placeholder="Your string to compare..." raw-text />
-      </n-form-item>
-      <n-form-item label="Your hash: " label-placement="left">
-        <c-input-text v-model:value="compareHash" placeholder="Your hash to compare..." raw-text />
-      </n-form-item>
-      <n-form-item label="Do they match ? " label-placement="left" :show-feedback="false">
-        <div class="compare-result" :class="{ positive: compareMatch }">
-          {{ compareMatch ? 'Yes' : 'No' }}
-        </div>
-      </n-form-item>
-    </n-form>
+    <div class="mb-4 flex flex-col gap-1">
+      <label class="text-sm text-[var(--text-secondary)]" style="min-width: 120px;">Your string:</label>
+      <c-input-text v-model:value="compareString" placeholder="Your string to compare..." raw-text />
+    </div>
+    <div class="mb-4 flex flex-col gap-1">
+      <label class="text-sm text-[var(--text-secondary)]" style="min-width: 120px;">Your hash:</label>
+      <c-input-text v-model:value="compareHash" placeholder="Your hash to compare..." raw-text />
+    </div>
+    <div class="flex items-center gap-3">
+      <label class="text-sm text-[var(--text-secondary)]" style="min-width: 120px;">Do they match?</label>
+      <div class="compare-result font-semibold" :class="{ positive: compareMatch }">
+        {{ compareMatch ? 'Yes' : 'No' }}
+      </div>
+    </div>
   </c-card>
 </template>
 
 <style lang="less" scoped>
 .compare-result {
-  color: v-bind('themeVars.errorColor');
+  color: var(--state-danger);
 
   &.positive {
-    color: v-bind('themeVars.successColor');
+    color: var(--state-success);
+  }
+}
+
+input[type="number"] {
+  &::-webkit-inner-spin-button,
+  &::-webkit-outer-spin-button {
+    opacity: 1;
   }
 }
 </style>

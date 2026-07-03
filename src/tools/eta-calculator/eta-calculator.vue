@@ -29,22 +29,24 @@ const endAt = computed(() =>
       With a concrete example, if you wash 5 plates in 3 minutes and you have 500 plates to wash, it will take you 5
       hours to wash them all.
     </div>
-    <n-divider />
-    <div flex gap-2>
-      <n-form-item label="Amount of element to consume" flex-1>
-        <n-input-number v-model:value="unitCount" :min="1" />
-      </n-form-item>
-      <n-form-item label="The consumption started at" flex-1>
-        <n-date-picker v-model:value="startedAt" type="datetime" />
-      </n-form-item>
+    <hr class="my-3 border-0 h-px bg-[var(--border-subtle)]" />
+    <div class="flex gap-2">
+      <div class="flex-1">
+        <label class="block text-sm font-medium text-[var(--text-secondary)] mb-1">Amount of element to consume</label>
+        <input v-model.number="unitCount" type="number" min="1" class="w-full rounded-[var(--radius-sm)] border border-[var(--border-default)] bg-[var(--bg-surface)] px-2 py-1 text-sm text-[var(--text-primary)] outline-none focus:border-[var(--accent-cyan)]" />
+      </div>
+      <div class="flex-1">
+        <label class="block text-sm font-medium text-[var(--text-secondary)] mb-1">The consumption started at</label>
+        <input v-model="startedAt" type="datetime-local" class="w-full rounded-[var(--radius-sm)] border border-[var(--border-default)] bg-[var(--bg-surface)] px-2 py-1 text-sm text-[var(--text-primary)] outline-none focus:border-[var(--accent-cyan)]" />
+      </div>
     </div>
 
     <p>Amount of unit consumed by time span</p>
     <div flex flex-col items-baseline gap-y-2 md:flex-row>
-      <n-input-number v-model:value="unitPerTimeSpan" :min="1" />
+      <input v-model.number="unitPerTimeSpan" type="number" min="1" class="rounded-[var(--radius-sm)] border border-[var(--border-default)] bg-[var(--bg-surface)] px-2 py-1 text-sm text-[var(--text-primary)] outline-none focus:border-[var(--accent-cyan)]" />
       <div flex items-baseline gap-2>
         <span ml-2>in</span>
-        <n-input-number v-model:value="timeSpan" min-w-130px :min="1" />
+        <input v-model.number="timeSpan" type="number" min="1" class="min-w-[130px] rounded-[var(--radius-sm)] border border-[var(--border-default)] bg-[var(--bg-surface)] px-2 py-1 text-sm text-[var(--text-primary)] outline-none focus:border-[var(--accent-cyan)]" />
         <c-select
           v-model:value="timeSpanUnitMultiplier"
           min-w-130px
@@ -59,23 +61,16 @@ const endAt = computed(() =>
       </div>
     </div>
 
-    <n-divider />
+    <hr class="my-3 border-0 h-px bg-[var(--border-subtle)]" />
     <c-card mb-2>
-      <n-statistic label="Total duration">
-        {{ formatMsDuration(durationMs) }}
-      </n-statistic>
+      <div class="text-sm font-medium text-[var(--text-secondary)] mb-1">Total duration</div>
+      <div class="text-lg font-semibold">{{ formatMsDuration(durationMs) }}</div>
     </c-card>
     <c-card>
-      <n-statistic label="It will end ">
-        {{ endAt }}
-      </n-statistic>
+      <div class="text-sm font-medium text-[var(--text-secondary)] mb-1">It will end</div>
+      <div class="text-lg font-semibold">{{ endAt }}</div>
     </c-card>
   </div>
 </template>
 
-<style lang="less" scoped>
-.n-input-number,
-.n-date-picker {
-  width: 100%;
-}
-</style>
+

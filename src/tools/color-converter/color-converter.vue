@@ -91,13 +91,15 @@ function updateColorValue(value: Colord | undefined, omitLabel?: string) {
         @update:value="(v:string) => updateColorValue(parse(v), key)"
       />
 
-      <n-form-item v-else-if="type === 'color-picker'" :label="`${label}:`" label-width="100" label-placement="left" :show-feedback="false">
-        <n-color-picker
-          v-model:value="formats[key].value.value"
-          placement="bottom-end"
-          @update:value="(v:string) => updateColorValue(parse(v), key)"
+      <div v-else-if="type === 'color-picker'" class="flex items-center gap-2 mt-2" style="padding-left: 100px">
+        <input
+          type="color"
+          :value="formats[key].value.value"
+          class="h-9 w-9 cursor-pointer rounded border border-[var(--border-default)] bg-transparent p-0.5"
+          @input="(e: Event) => updateColorValue(parse((e.target as HTMLInputElement).value), key)"
         />
-      </n-form-item>
+        <span class="text-sm text-[var(--text-secondary)]">{{ label }}:</span>
+      </div>
     </template>
   </c-card>
 </template>

@@ -15,35 +15,13 @@ const fields = computed(() => {
   }
 
   return [
-    {
-      label: 'Key :',
-      value: event.value.key,
-      placeholder: 'Key name...',
-    },
-    {
-      label: 'Keycode :',
-      value: String(event.value.keyCode),
-      placeholder: 'Keycode...',
-    },
-    {
-      label: 'Code :',
-      value: event.value.code,
-      placeholder: 'Code...',
-    },
-    {
-      label: 'Location :',
-      value: String(event.value.location),
-      placeholder: 'Code...',
-    },
-
+    { label: 'Key :', value: event.value.key, placeholder: 'Key name...' },
+    { label: 'Keycode :', value: String(event.value.keyCode), placeholder: 'Keycode...' },
+    { label: 'Code :', value: event.value.code, placeholder: 'Code...' },
+    { label: 'Location :', value: String(event.value.location), placeholder: 'Code...' },
     {
       label: 'Modifiers :',
-      value: [
-        event.value.metaKey && 'Meta',
-        event.value.shiftKey && 'Shift',
-        event.value.ctrlKey && 'Ctrl',
-        event.value.altKey && 'Alt',
-      ]
+      value: [event.value.metaKey && 'Meta', event.value.shiftKey && 'Shift', event.value.ctrlKey && 'Ctrl', event.value.altKey && 'Alt']
         .filter(Boolean)
         .join(' + '),
       placeholder: 'None',
@@ -54,20 +32,20 @@ const fields = computed(() => {
 
 <template>
   <div>
-    <c-card mb-5 text-center important:py-12>
-      <div v-if="event" mb-2 text-3xl>
+    <c-card class="mb-5 text-center !py-12">
+      <div v-if="event" class="mb-2 text-3xl text-[var(--text-primary)]">
         {{ event.key }}
       </div>
-      <span lh-1 op-70>
+      <span class="leading-snug opacity-70 text-[var(--text-muted)]">
         Press the key on your keyboard you want to get info about this key
       </span>
     </c-card>
 
-    <n-input-group v-for="({ label, value, placeholder }, i) of fields" :key="i" style="margin-bottom: 5px">
-      <n-input-group-label style="flex: 0 0 150px">
+    <div v-for="({ label, value, placeholder }, i) of fields" :key="i" class="mb-1 flex items-center gap-2">
+      <div class="shrink-0 text-sm font-medium text-[var(--text-secondary)]" style="flex: 0 0 150px;">
         {{ label }}
-      </n-input-group-label>
-      <InputCopyable :value="value" readonly :placeholder="placeholder" />
-    </n-input-group>
+      </div>
+      <InputCopyable :value="value" readonly :placeholder="placeholder" class="min-w-0 flex-1" />
+    </div>
   </div>
 </template>

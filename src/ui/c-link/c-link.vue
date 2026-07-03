@@ -1,28 +1,29 @@
 <script lang="ts" setup>
 import { type RouteLocationRaw, RouterLink } from 'vue-router';
-import { useTheme } from './c-link.theme';
 
 const props = defineProps<{
   href?: string
   to?: RouteLocationRaw
+  type?: 'primary' | 'default'
 }>();
 
 const { href, to } = toRefs(props);
 
-const theme = useTheme();
 const tag = computed(() => {
-  if (href?.value) {
-    return 'a';
-  }
-  if (to?.value) {
-    return RouterLink;
-  }
+  if (href?.value) return 'a';
+  if (to?.value) return RouterLink;
   return 'span';
 });
 </script>
 
 <template>
-  <component :is="tag" :href="href ?? to" class="c-link" :to="to">
+  <component
+    :is="tag"
+    :href="href ?? to"
+    class="c-link"
+    :class="{ 'c-link--primary': type === 'primary' }"
+    :to="to"
+  >
     <slot />
   </component>
 </template>
@@ -36,22 +37,22 @@ const tag = computed(() => {
   cursor: pointer;
   text-decoration: none;
   font-weight: 400;
-  color: v-bind('theme.default.textColor');
+  color: var(--text-secondary);
   border-radius: 4px;
-  transition: color cubic-bezier(0.4, 0, 0.2, 1) 0.3s;
-
+  transition: color 0.2s ease;
   outline-offset: 1px;
 
   &:hover {
-    color: v-bind('theme.default.hover.textColor');
+    color: var(--accent-primary);
   }
 
-  &:active {
-    color: v-bind('theme.default.textColor');
+  &:focus-visible {
+    box-shadow: 0 0 0 2px var(--bg-app), 0 0 0 4px var(--accent-primary);
   }
 
-  &:focus {
-    color: v-bind('theme.default.outline.color');
+  &--primary {
+    color: var(--accent-primary);
+    &:hover { color: var(--accent-primary-hover); }
   }
 }
 </style>

@@ -1,111 +1,34 @@
 <script setup lang="ts">
-import { useThemeVars } from 'naive-ui';
 import FavoriteButton from './FavoriteButton.vue';
 import type { Tool } from '@/tools/tools.types';
 
 const props = defineProps<{ tool: Tool & { category: string } }>();
 const { tool } = toRefs(props);
-const theme = useThemeVars();
 </script>
 
 <template>
-  <router-link :to="tool.path" class="tool-card-link">
-    <div class="tool-card">
-      <div class="tool-card-top">
-        <n-icon class="tool-icon" size="36" :component="tool.icon" />
-        <div class="tool-card-meta">
+  <router-link :to="tool.path" class="tool-card-link block no-underline">
+    <div class="tool-card flex h-full cursor-pointer flex-col rounded-[var(--radius-md)] border border-[var(--border-subtle)] bg-[var(--surface-card)] p-4 transition-all duration-200 hover:border-[color-mix(in_srgb,var(--accent-primary),transparent_75%)] hover:shadow-[0_0_0_1px_color-mix(in_srgb,var(--accent-primary),transparent_92%)]">
+      <div class="mb-3 flex items-start justify-between">
+        <component :is="tool.icon" class="shrink-0 text-[var(--text-muted)] opacity-70" size="36" />
+        <div class="flex items-center gap-1.5">
           <FavoriteButton :tool="tool" />
           <div
             v-if="tool.isNew"
-            class="new-badge"
-            :style="{ 'background-color': theme.primaryColor }"
+            class="new-badge rounded-full bg-[var(--accent-primary)] px-2 py-0.5 text-[11px] font-semibold uppercase leading-normal tracking-wide text-white"
           >
             {{ $t('toolCard.new') }}
           </div>
         </div>
       </div>
-      <div class="tool-card-body">
-        <div class="tool-name">{{ tool.name }}</div>
-        <div class="tool-desc">{{ tool.description }}</div>
+      <div class="flex-1">
+        <div class="mb-1 overflow-hidden text-ellipsis whitespace-nowrap font-[var(--font-heading)] text-[15px] font-semibold text-[var(--text-primary)]">
+          {{ tool.name }}
+        </div>
+        <div class="line-clamp-2 text-[13px] leading-snug text-[var(--text-secondary)]">
+          {{ tool.description }}
+        </div>
       </div>
     </div>
   </router-link>
 </template>
-
-<style lang="less" scoped>
-.tool-card-link {
-  text-decoration: none;
-  display: block;
-}
-
-.tool-card {
-  background: var(--surface-card);
-  border: 1px solid var(--border-subtle);
-  border-radius: var(--radius-md, 16px);
-  padding: 16px;
-  transition: border-color var(--transition-base), box-shadow var(--transition-base);
-  height: 100%;
-  display: flex;
-  flex-direction: column;
-  cursor: pointer;
-
-  &:hover {
-    border-color: rgba(34, 211, 238, 0.25);
-    box-shadow: 0 0 0 1px rgba(34, 211, 238, 0.08);
-  }
-}
-
-.tool-card-top {
-  display: flex;
-  align-items: flex-start;
-  justify-content: space-between;
-  margin-bottom: 12px;
-}
-
-.tool-icon {
-  color: var(--text-muted);
-  opacity: 0.7;
-}
-
-.tool-card-meta {
-  display: flex;
-  align-items: center;
-  gap: 6px;
-}
-
-.new-badge {
-  border-radius: 100px;
-  padding: 2px 8px;
-  font-size: 11px;
-  font-weight: 600;
-  text-transform: uppercase;
-  letter-spacing: 0.03em;
-  color: #fff;
-  line-height: 1.4;
-}
-
-.tool-card-body {
-  flex: 1;
-}
-
-.tool-name {
-  font-family: var(--font-heading);
-  font-size: 15px;
-  font-weight: 600;
-  color: var(--text-primary);
-  margin-bottom: 4px;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-
-.tool-desc {
-  font-size: 13px;
-  line-height: 1.5;
-  color: var(--text-secondary);
-  display: -webkit-box;
-  -webkit-line-clamp: 2;
-  -webkit-box-orient: vertical;
-  overflow: hidden;
-}
-</style>

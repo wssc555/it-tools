@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import { useTimestamp } from '@vueuse/core';
-import { useThemeVars } from 'naive-ui';
 import { useQRCode } from '../qr-code-generator/useQRCode';
 import { base32toHex, buildKeyUri, generateSecret, generateTOTP, getCounterFromTime } from './otp.service';
 import TokenDisplay from './token-display.vue';
@@ -10,7 +9,6 @@ import { computedRefreshable } from '@/composable/computedRefreshable';
 
 const now = useTimestamp();
 const interval = computed(() => (now.value / 1000) % 30);
-const theme = useThemeVars();
 const styleStore = useStyleStore();
 
 const secret = ref(generateSecret());
@@ -72,13 +70,13 @@ const secretValidationRules = [
     <div>
       <TokenDisplay :tokens="tokens" />
 
-      <n-progress :percentage="(100 * interval) / 30" :color="theme.primaryColor" :show-indicator="false" />
+      <div class="otp-progress-bar" :style="{ width: `${(100 * interval) / 30}%` }"></div>
       <div style="text-align: center">
         Next in {{ String(Math.floor(30 - interval)).padStart(2, '0') }}s
       </div>
     </div>
     <div mt-4 flex flex-col items-center justify-center gap-3>
-      <n-image :src="qrcode" />
+      <img :src="qrcode" alt="OTP QR Code" />
       <c-button :href="keyUri" target="_blank">
         Open Key URI in new tab
       </c-button>
@@ -126,13 +124,6 @@ const secretValidationRules = [
 </template>
 
 <style lang="less" scoped>
-.n-progress {
-  margin-top: 10px;
-  ::v-deep(.n-progress-graph-line-fill) {
-    transition-duration: 0.05s !important;
-  }
-}
-
 .token {
   text-align: center;
   &.token-current {
