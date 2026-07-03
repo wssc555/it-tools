@@ -10,6 +10,11 @@ declare module '*.md' {
   export default Component;
 }
 
+declare module '*.yml' {
+  const messages: Record<string, any>;
+  export default messages;
+}
+
 declare module 'iarna-toml-esm' {
   export const parse: (toml: string) => any;
   export const stringify: (obj: any) => string;

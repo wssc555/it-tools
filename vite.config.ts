@@ -90,6 +90,7 @@ export default defineConfig({
       extensions: ['vue', 'md'],
       include: [/\.vue$/, /\.vue\?vue/, /\.md$/],
       resolvers: [IconsResolver({ prefix: 'icon' })],
+      exclude: ['command-palette', 'CommandPalette'],
     }),
   ],
   base: baseUrl,

@@ -2,6 +2,8 @@
 import { RouterLink, useRoute } from 'vue-router';
 import { IconHeart, IconHome2, IconMenu2, IconBrandGithub } from '@tabler/icons-vue';
 
+const CommandPalette = defineAsyncComponent(() => import('@/modules/command-palette/command-palette.vue'));
+
 import { storeToRefs } from 'pinia';
 import HeroGradient from '../assets/hero-gradient.svg?component';
 import MenuLayout from '../components/MenuLayout.vue';

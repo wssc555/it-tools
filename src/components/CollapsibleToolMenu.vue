@@ -11,8 +11,8 @@ const route = useRoute();
 const router = useRouter();
 const toolStore = useToolStore();
 
-const collapsedCategories = useStorage<Record<string, boolean>>(
-  'menu-tool-option:collapsed-categories',
+const expandedCategories = useStorage<Record<string, boolean>>(
+  'menu-tool-option:expanded-categories',
   {},
   undefined,
   {
@@ -24,12 +24,16 @@ const collapsedCategories = useStorage<Record<string, boolean>>(
   },
 );
 
-function toggleCategoryCollapse({ name }: { name: string }) {
-  collapsedCategories.value[name] = !collapsedCategories.value[name];
+function toggleCategoryExpand({ name }: { name: string }) {
+  if (expandedCategories.value[name]) {
+    delete expandedCategories.value[name];
+  } else {
+    expandedCategories.value[name] = true;
+  }
 }
 
 function selectCategory(name: string) {
-  toggleCategoryCollapse({ name });
+  toggleCategoryExpand({ name });
   if (toolStore.selectedCategoryName === name) {
     toolStore.selectedCategoryName = null;
   } else {
@@ -50,7 +54,7 @@ function selectCategory(name: string) {
         :class="{ 'category-header--active': toolStore.selectedCategoryName === name }"
         @click="selectCategory(name)"
       >
-        <span class="chevron" :class="{ collapsed: collapsedCategories[name] }">
+        <span class="chevron" :class="{ collapsed: !expandedCategories[name] }">
           <icon-mdi-chevron-right />
         </span>
         <span class="category-name">{{ name }}</span>
@@ -58,7 +62,7 @@ function selectCategory(name: string) {
 
       <!-- ─── Card body ─── -->
       <transition name="collapse">
-        <div v-if="!collapsedCategories[name]" class="card-body">
+        <div v-if="expandedCategories[name]" class="card-body">
           <router-link
             v-for="tool in components"
             :key="tool.path"
